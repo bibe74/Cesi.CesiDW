@@ -1,0 +1,2 @@
+CREATE SYNONYM [MYSOLUTION].[Country] FOR [MYSOLUTIONPRODUZIONE2].[Nop_MySolution].[dbo].[Country]
+GO

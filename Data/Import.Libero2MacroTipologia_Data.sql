@@ -1,0 +1,7 @@
+INSERT INTO [Import].[Libero2MacroTipologia] ([IDLibero2], [Libero2], [MacroTipologia], [IsValidaPerBudgetNuoveVendite], [IsValidaPerBudgetRinnovi]) VALUES (N'REC', N'RECUPERO', N'Nuova vendita', 1, 0)
+INSERT INTO [Import].[Libero2MacroTipologia] ([IDLibero2], [Libero2], [MacroTipologia], [IsValidaPerBudgetNuoveVendite], [IsValidaPerBudgetRinnovi]) VALUES (N'AUTO', N'RINNOVO AUTOMATICO', N'Rinnovo', 0, 1)
+INSERT INTO [Import].[Libero2MacroTipologia] ([IDLibero2], [Libero2], [MacroTipologia], [IsValidaPerBudgetNuoveVendite], [IsValidaPerBudgetRinnovi]) VALUES (N'NEW', N'NUOVO', N'Nuova vendita', 1, 0)
+INSERT INTO [Import].[Libero2MacroTipologia] ([IDLibero2], [Libero2], [MacroTipologia], [IsValidaPerBudgetNuoveVendite], [IsValidaPerBudgetRinnovi]) VALUES (N'NEW F.P.', N'NUOVO CON FATTURA POSTICIPATA', N'Nuova vendita', 1, 0)
+INSERT INTO [Import].[Libero2MacroTipologia] ([IDLibero2], [Libero2], [MacroTipologia], [IsValidaPerBudgetNuoveVendite], [IsValidaPerBudgetRinnovi]) VALUES (N'RIN-AG', N'RINNOVO AGENTE', N'Rinnovo', 0, 1)
+INSERT INTO [Import].[Libero2MacroTipologia] ([IDLibero2], [Libero2], [MacroTipologia], [IsValidaPerBudgetNuoveVendite], [IsValidaPerBudgetRinnovi]) VALUES (N'RIN-CON', N'RINNOVO CONCORDATO', N'Rinnovo', 0, 1)
+INSERT INTO [Import].[Libero2MacroTipologia] ([IDLibero2], [Libero2], [MacroTipologia], [IsValidaPerBudgetNuoveVendite], [IsValidaPerBudgetRinnovi]) VALUES (N'RIN-DIR', N'RINNOVO DIREZIONALI', N'Rinnovo', 0, 1)

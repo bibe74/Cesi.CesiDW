@@ -1,0 +1,2 @@
+CREATE SYNONYM [WEBINARS].[WeBinars] FOR [MYSOLUTIONPRODUZIONE2].[dbWebinars].[dbo].[WeBinars]
+GO

@@ -1,0 +1,5 @@
+CREATE SCHEMA [Dim]
+AUTHORIZATION [dbo]
+GO
+GRANT SELECT ON SCHEMA:: [Dim] TO [cesidw_reader]
+GO

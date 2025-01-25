@@ -1,0 +1,53 @@
+CREATE TABLE [Staging].[Cliente]
+(
+[IDSoggettoCommerciale] [int] NOT NULL,
+[HistoricalHashKey] [varbinary] (20) NULL,
+[ChangeHashKey] [varbinary] (20) NULL,
+[HistoricalHashKeyASCII] [varchar] (34) COLLATE Latin1_General_CI_AS NULL,
+[ChangeHashKeyASCII] [varchar] (34) COLLATE Latin1_General_CI_AS NULL,
+[InsertDatetime] [datetime] NOT NULL,
+[UpdateDatetime] [datetime] NOT NULL,
+[IsDeleted] [bit] NULL,
+[Email] [nvarchar] (80) COLLATE Latin1_General_CI_AS NOT NULL,
+[IDAnagraficaCometa] [int] NOT NULL,
+[HasAnagraficaCometa] [bit] NOT NULL,
+[HasAnagraficaNopCommerce] [bit] NOT NULL,
+[HasAnagraficaMySolution] [bit] NOT NULL,
+[ProvenienzaAnagrafica] [nvarchar] (20) COLLATE Latin1_General_CI_AS NOT NULL,
+[CodiceCliente] [nvarchar] (10) COLLATE Latin1_General_CI_AS NOT NULL,
+[TipoSoggettoCommerciale] [char] (1) COLLATE Latin1_General_CI_AS NOT NULL,
+[RagioneSociale] [nvarchar] (120) COLLATE Latin1_General_CI_AS NOT NULL,
+[CodiceFiscale] [nvarchar] (20) COLLATE Latin1_General_CI_AS NOT NULL,
+[PartitaIVA] [nvarchar] (20) COLLATE Latin1_General_CI_AS NOT NULL,
+[Indirizzo] [nvarchar] (120) COLLATE Latin1_General_CI_AS NOT NULL,
+[CAP] [nvarchar] (10) COLLATE Latin1_General_CI_AS NOT NULL,
+[Localita] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[Provincia] [nvarchar] (50) COLLATE Latin1_General_CI_AS NOT NULL,
+[Regione] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[Macroregione] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[Nazione] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[TipoCliente] [nvarchar] (10) COLLATE Latin1_General_CI_AS NOT NULL,
+[Agente] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[PKDataInizioContratto] [date] NOT NULL,
+[PKDataFineContratto] [date] NOT NULL,
+[PKDataDisdetta] [date] NOT NULL,
+[MotivoDisdetta] [nvarchar] (120) COLLATE Latin1_General_CI_AS NOT NULL,
+[PKGruppoAgenti] [int] NOT NULL,
+[Cognome] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[Nome] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[Telefono] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[Cellulare] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[Fax] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[IsAbbonato] [bit] NOT NULL,
+[IDSoggettoCommerciale_migrazione] [int] NULL,
+[IDSoggettoCommerciale_migrazione_old] [int] NULL,
+[IDProvincia] [nvarchar] (10) COLLATE Latin1_General_CI_AS NOT NULL,
+[CapoAreaDefault] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[AgenteDefault] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL,
+[HasRoleMySolutionDemo] [bit] NOT NULL
+) ON [PRIMARY]
+GO
+ALTER TABLE [Staging].[Cliente] ADD CONSTRAINT [PK_Staging_Cliente] PRIMARY KEY CLUSTERED ([UpdateDatetime], [IDSoggettoCommerciale]) ON [PRIMARY]
+GO
+CREATE UNIQUE NONCLUSTERED INDEX [IX_Staging_Cliente_BusinessKey] ON [Staging].[Cliente] ([IDSoggettoCommerciale]) ON [PRIMARY]
+GO

@@ -1,0 +1,2 @@
+CREATE SYNONYM [MYSOLUTION].[LogsEpiServer] FOR [MYSOLUTIONPRODUZIONE].[MySolution].[dbo].[LogsEpiServer]
+GO

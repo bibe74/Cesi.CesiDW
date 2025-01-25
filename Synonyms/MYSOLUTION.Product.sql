@@ -1,0 +1,2 @@
+CREATE SYNONYM [MYSOLUTION].[Product] FOR [MYSOLUTIONPRODUZIONE2].[Nop_MySolution].[dbo].[Product]
+GO

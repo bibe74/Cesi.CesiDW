@@ -1,0 +1,5 @@
+INSERT INTO [Import].[InvioReportCrediti] ([Email], [Descrizione], [Note]) VALUES (N'carola@elabro.it', N'Elabro di Novara', N'seguono di due la Formazione anche se solo 1 inclusa nell’abbonamento  e l’altra a pagamento')
+INSERT INTO [Import].[InvioReportCrediti] ([Email], [Descrizione], [Note]) VALUES (N'daniela@elabro.it', N'Elabro di Novara', N'seguono di due la Formazione anche se solo 1 inclusa nell’abbonamento  e l’altra a pagamento')
+INSERT INTO [Import].[InvioReportCrediti] ([Email], [Descrizione], [Note]) VALUES (N'fornaricinzia@hotmail.com', N'Fornari Cinzia', N'Iscritta al Master Plus ma non è Revisore')
+INSERT INTO [Import].[InvioReportCrediti] ([Email], [Descrizione], [Note]) VALUES (N'info@studio-mereghetti.it', N'Studio Mereghetti', N'iscritta al Master e al Master Plus  ha 2 formazioni nell’abbonamento')
+INSERT INTO [Import].[InvioReportCrediti] ([Email], [Descrizione], [Note]) VALUES (N'paolo.acquaroni@studioacquaroni.it', N'Acquaroni Paolo', N'iscritto al Master Plus e alla Revisione')

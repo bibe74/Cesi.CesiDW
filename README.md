@@ -1,2 +1,0 @@
-# Cesi.CesiDW
-CesiDW database
