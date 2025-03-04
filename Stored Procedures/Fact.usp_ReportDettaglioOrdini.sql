@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 /**
  * @storedprocedure Fact.usp_ReportDettaglioOrdini
 */
@@ -100,7 +101,10 @@ AS (
         A.Fatturazione,
         D.Progressivo,
 		SUM(CASE WHEN D.NumeroRiga = 1 THEN D.Quote ELSE NULL END) AS Quote,
-        C.TipoCliente,
+
+        --C.TipoCliente,
+        A.Tipo,
+
         D.TipoFatturazione,
         COALESCE(MAX(ROF.PKDataFattura), CAST('19000101' AS DATE)) AS PKDataFattura,
         D.NoteIntestazione,
@@ -198,7 +202,8 @@ AS (
         C.MotivoDisdetta,
         A.Fatturazione,
         D.Progressivo,
-        C.TipoCliente,
+        --C.TipoCliente,
+        A.Tipo,
         D.TipoFatturazione,
         D.NoteIntestazione,
         C.Email,
@@ -248,7 +253,8 @@ AS (
 		O.Quote,
         ROW_NUMBER() OVER (PARTITION BY O.CodiceCliente ORDER BY O.NumeroDocumento) AS rn,
         ROW_NUMBER() OVER (PARTITION BY O.PrefissoCapoArea ORDER BY O.CodiceCliente, O.NumeroDocumento) AS rnCapoArea,
-        O.TipoCliente,
+        --O.TipoCliente,
+        O.Tipo,
         O.TipoFatturazione,
         O.PKDataFattura,
         O.NoteIntestazione,
@@ -297,7 +303,8 @@ SELECT
     DO.Fatturazione,
     DO.Progressivo,
 	DO.Quote,
-    DO.TipoCliente,
+    --DO.TipoCliente,
+    DO.Tipo AS TipoCliente,
     DO.TipoFatturazione,
     DO.PKDataFattura,
     DO.NoteIntestazione,
