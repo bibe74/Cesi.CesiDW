@@ -2,6 +2,9 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+/**
+ * @storedprocedure Fact.usp_ReportDettaglioRigheOrdine
+*/
 
 CREATE   PROCEDURE [Fact].[usp_ReportDettaglioRigheOrdine] (
     @PKDataInizioPeriodo DATE,
@@ -90,7 +93,7 @@ AS (
         A.Fatturazione,
         D.Progressivo,
 		SUM(CASE WHEN D.NumeroRiga = 1 THEN D.Quote ELSE NULL END) AS Quote,
-        C.TipoCliente,
+        A.Tipo AS TipoCliente,
         D.TipoFatturazione,
         COALESCE(MAX(ROF.PKDataFattura), CAST('19000101' AS DATE)) AS PKDataFattura,
         D.NoteIntestazione,
@@ -180,7 +183,7 @@ AS (
         C.MotivoDisdetta,
         A.Fatturazione,
         D.Progressivo,
-        C.TipoCliente,
+        A.Tipo,
         D.TipoFatturazione,
         D.NoteIntestazione,
         C.Email,

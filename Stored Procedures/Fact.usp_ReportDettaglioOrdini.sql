@@ -103,7 +103,7 @@ AS (
 		SUM(CASE WHEN D.NumeroRiga = 1 THEN D.Quote ELSE NULL END) AS Quote,
 
         --C.TipoCliente,
-        A.Tipo,
+        A.Tipo AS TipoCliente,
 
         D.TipoFatturazione,
         COALESCE(MAX(ROF.PKDataFattura), CAST('19000101' AS DATE)) AS PKDataFattura,
@@ -253,8 +253,7 @@ AS (
 		O.Quote,
         ROW_NUMBER() OVER (PARTITION BY O.CodiceCliente ORDER BY O.NumeroDocumento) AS rn,
         ROW_NUMBER() OVER (PARTITION BY O.PrefissoCapoArea ORDER BY O.CodiceCliente, O.NumeroDocumento) AS rnCapoArea,
-        --O.TipoCliente,
-        O.Tipo,
+        O.TipoCliente,
         O.TipoFatturazione,
         O.PKDataFattura,
         O.NoteIntestazione,
@@ -303,8 +302,7 @@ SELECT
     DO.Fatturazione,
     DO.Progressivo,
 	DO.Quote,
-    --DO.TipoCliente,
-    DO.Tipo AS TipoCliente,
+    DO.TipoCliente,
     DO.TipoFatturazione,
     DO.PKDataFattura,
     DO.NoteIntestazione,
