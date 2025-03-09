@@ -2,6 +2,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
+/**
+ * @storedprocedure Fact.usp_ReportOrdinatoGenerale
+*/
+
 CREATE   PROCEDURE [Fact].[usp_ReportOrdinatoGenerale] (
     @AnnoCorrente INT,
     @CapoArea NVARCHAR(60) = NULL

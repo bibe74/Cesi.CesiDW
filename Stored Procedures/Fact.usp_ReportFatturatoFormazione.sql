@@ -2,6 +2,11 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
+/**
+ * @storedprocedure Fact.usp_ReportFatturatoFormazione
+*/
+
 CREATE   PROCEDURE [Fact].[usp_ReportFatturatoFormazione] (
     @CodiceEsercizio CHAR(4),
     @CapoArea NVARCHAR(60),

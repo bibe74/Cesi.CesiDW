@@ -3,6 +3,10 @@ GO
 SET ANSI_NULLS ON
 GO
 
+/**
+ * @storedprocedure Fact.usp_ReportOrdinatoGeneraleBudget
+*/
+
 CREATE   PROCEDURE [Fact].[usp_ReportOrdinatoGeneraleBudget] (
     @AnnoCorrente INT,
     @CapoArea NVARCHAR(60) = NULL
