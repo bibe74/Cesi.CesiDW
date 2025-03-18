@@ -3,36 +3,6 @@ GO
 SET ANSI_NULLS ON
 GO
 
-/*
-
-SELECT DISTINCT
-    D.Anno
-FROM Dim.Data D
-WHERE D.Anno > 1900
-    AND D.Anno <= YEAR(DATEADD(DAY, -1, CURRENT_TIMESTAMP))
-ORDER BY D.Anno DESC;
-
-SELECT DISTINCT
-    GAR.CapoArea,
-    GAR.CapoArea AS CapoAreaDescrizione
-
-FROM Fact.Documenti D
-INNER JOIN Dim.GruppoAgenti GAR ON GAR.PKGruppoAgenti = D.PKGruppoAgenti_Riga
-INNER JOIN Bridge.ADUserCapoArea AUCA ON AUCA.CapoArea = GAR.CapoArea
-    AND AUCA.ADUser = @ADUser
-WHERE D.CodiceEsercizio IN (
-    CONVERT(CHAR(4), @AnnoCorrente),
-    CONVERT(CHAR(4), @AnnoCorrente - 1)
-)
-
-UNION ALL SELECT NULL, N'Tutti'
-FROM Import.Amministratori A
-WHERE A.ADUser = @ADUser
-
-ORDER BY CapoArea;
-
-*/
-
 /**
  * @storedprocedure Fact.usp_ReportFatturatoFormazioneTipologiaDettaglio
 */
