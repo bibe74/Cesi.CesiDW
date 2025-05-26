@@ -46,7 +46,7 @@ BEGIN
             )
         INNER JOIN Dim.Articolo A ON A.PKArticolo = D.PKArticolo
             AND A.CodiceEsercizioMaster IN (@CodiceEsercizioMasterCorrente, @CodiceEsercizioMasterPrecedente)
-        INNER JOIN Staging.ArticoloCategoriaMaster ACM ON ACM.id_articolo = A.id_articolo
+        INNER JOIN Import.ArticoloCategoriaMaster ACM ON ACM.Codice = A.Codice
         WHERE D.IDProfilo = N'ORDSEM'
             AND D.IsDeleted = CAST(0 AS BIT)
         GROUP BY D.PKCliente,

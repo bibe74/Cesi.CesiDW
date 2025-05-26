@@ -25,8 +25,10 @@ DECLARE @PKDataInizioPeriodo DATE,
     @PKDataInizioUltimoTrimestre DATE,
     @PKDataInizioUltimoSemestre DATE,
     @AnnoCorrente INT,
-    @CodiceEsercizioMasterCorrente NVARCHAR(10),
-    @CodiceEsercizioMasterPrecedente NVARCHAR(10);
+    ----@CodiceEsercizioMasterCorrente NVARCHAR(10),
+    ----@CodiceEsercizioMasterPrecedente NVARCHAR(10);
+    @AnnoMasterCorrente SMALLINT,
+    @AnnoMasterPrecedente SMALLINT;
 
 SELECT @PKDataInizioUltimoSemestre = DATEADD(MONTH, -6, DATEADD(DAY, 1, @PKDataFinePeriodo)),
     @PKDataInizioUltimoTrimestre = DATEADD(MONTH, -3, DATEADD(DAY, 1, @PKDataFinePeriodo)),
@@ -36,10 +38,12 @@ SET @PKDataInizioPeriodo = @PKDataInizioUltimoSemestre;
 
 SELECT @AnnoCorrente = YEAR(@PKDataFinePeriodo) - 1;
 
-SELECT @CodiceEsercizioMasterCorrente = CONVERT(NVARCHAR(4), @AnnoCorrente) + N'/' + CONVERT(NVARCHAR(4), @AnnoCorrente + 1),
-    @CodiceEsercizioMasterPrecedente = CONVERT(NVARCHAR(4), @AnnoCorrente - 1) + N'/' + CONVERT(NVARCHAR(4), @AnnoCorrente);
+----SELECT @CodiceEsercizioMasterCorrente = CONVERT(NVARCHAR(4), @AnnoCorrente) + N'/' + CONVERT(NVARCHAR(4), @AnnoCorrente + 1),
+----    @CodiceEsercizioMasterPrecedente = CONVERT(NVARCHAR(4), @AnnoCorrente - 1) + N'/' + CONVERT(NVARCHAR(4), @AnnoCorrente);
+SELECT @AnnoMasterCorrente = @AnnoCorrente,
+    @AnnoMasterPrecedente = @AnnoCorrente - 1;
 
---SELECT @PKDataInizioPeriodo, @PKDataFinePeriodo, @PKDataInizioUltimoMese, @PKDataInizioUltimoTrimestre, @PKDataInizioUltimoSemestre, @AnnoCorrente, @CodiceEsercizioMasterCorrente, @CodiceEsercizioMasterPrecedente;
+--SELECT @PKDataInizioPeriodo, @PKDataFinePeriodo, @PKDataInizioUltimoMese, @PKDataInizioUltimoTrimestre, @PKDataInizioUltimoSemestre, @AnnoCorrente, @AnnoMasterCorrente, @AnnoMasterPrecedente;
 
 DECLARE @AgenteProprietarioPrefix NVARCHAR(20) = N'Proprietario(';
 
@@ -188,7 +192,8 @@ AS (
     SELECT
         D.PKCliente, --C.Email,
         ACM.CategoriaMaster,
-        ACM.CodiceEsercizioMaster AS CodiceEsercizio,
+        ----ACM.CodiceEsercizioMaster AS CodiceEsercizio,
+        DD.Anno AS AnnoMaster,
         MAX(D.PKDataDocumento) AS DataUltimaFattura,
         COUNT(1) AS NumeroIscritti,
         SUM(D.ImportoTotale * ACM.Percentuale) AS ImportoTotale
@@ -196,13 +201,16 @@ AS (
     FROM Fact.Documenti D
     INNER JOIN Dim.Cliente C ON C.PKCliente = D.PKCliente
     INNER JOIN Dim.Articolo A ON A.PKArticolo = D.PKArticolo
-        AND A.CodiceEsercizioMaster IN (@CodiceEsercizioMasterCorrente, @CodiceEsercizioMasterPrecedente)
-    INNER JOIN Staging.ArticoloCategoriaMaster ACM ON ACM.id_articolo = A.id_articolo
+        ----AND A.CodiceEsercizioMaster IN (@CodiceEsercizioMasterCorrente, @CodiceEsercizioMasterPrecedente)
+    INNER JOIN Import.ArticoloCategoriaMaster ACM ON ACM.Codice = A.Codice
+    INNER JOIN Dim.Data DD ON DD.PKData = D.PKDataDocumento
+        AND DD.Anno IN (@AnnoMasterPrecedente, @AnnoMasterCorrente)
     WHERE D.IDProfilo = N'ORDSEM'
         AND D.IsDeleted = CAST(0 AS BIT)
     GROUP BY D.PKCliente, --C.Email,
         ACM.CategoriaMaster,
-        ACM.CodiceEsercizioMaster
+        ----ACM.CodiceEsercizioMaster,
+        DD.Anno
 ),
 Clienti
 AS (
@@ -265,10 +273,12 @@ SELECT
     --CMIA.CreditiConsumati,
     --CMIA.CreditiFuoriOrdine,
     CMIA.CreditiResidui,
-    @CodiceEsercizioMasterPrecedente AS CodiceEsercizioPrecedente,
+    ----@CodiceEsercizioMasterPrecedente AS CodiceEsercizioPrecedente,
+    CONVERT(NVARCHAR(4), @AnnoMasterPrecedente) AS CodiceEsercizioPrecedente,
     IMAP.NumeroIscritti AS NumeroIscrittiAnnoPrecedente,
     IMAP.ImportoTotale AS ImportoTotaleAnnoPrecedente,
-    @CodiceEsercizioMasterCorrente AS CodiceEsercizioCorrente,
+    ----@CodiceEsercizioMasterCorrente AS CodiceEsercizioCorrente,
+    CONVERT(NVARCHAR(4), @AnnoMasterPrecedente) AS CodiceEsercizioCorrente,
     IMMAP.NumeroIscritti AS NumeroIscrittiMiniMasterAnnoPrecedente,
     IMMAP.ImportoTotale AS ImportoTotaleMiniMasterAnnoPrecedente,
     IMAC.NumeroIscritti AS NumeroIscrittiAnnoCorrente,
@@ -286,16 +296,20 @@ LEFT JOIN Accessi A ON A.PKCliente = C.PKCliente
 LEFT JOIN CreditiMIA CMIA ON CMIA.PKCliente = C.PKCliente
 LEFT JOIN IscrizioniMaster IMAC ON IMAC.PKCliente = C.PKCliente
     AND IMAC.CategoriaMaster = N'Master MySolution'
-    AND IMAC.CodiceEsercizio = @CodiceEsercizioMasterCorrente
+    --AND IMAC.CodiceEsercizio = @CodiceEsercizioMasterCorrente
+    AND IMAC.AnnoMaster = @AnnoMasterCorrente
 LEFT JOIN IscrizioniMaster IMAP ON IMAP.PKCliente = C.PKCliente
     AND IMAP.CategoriaMaster = N'Master MySolution'
-    AND IMAP.CodiceEsercizio = @CodiceEsercizioMasterPrecedente
+    ----AND IMAP.CodiceEsercizio = @CodiceEsercizioMasterPrecedente
+    AND IMAP.AnnoMaster = @AnnoMasterPrecedente
 LEFT JOIN IscrizioniMaster IMMAC ON IMMAC.PKCliente = C.PKCliente
     AND IMMAC.CategoriaMaster = N'Mini Master Revisione'
-    AND IMMAC.CodiceEsercizio = @CodiceEsercizioMasterCorrente
+    ----AND IMMAC.CodiceEsercizio = @CodiceEsercizioMasterCorrente
+    AND IMMAC.AnnoMaster = @AnnoMasterCorrente
 LEFT JOIN IscrizioniMaster IMMAP ON IMMAP.PKCliente = C.PKCliente
     AND IMMAP.CategoriaMaster = N'Mini Master Revisione'
-    AND IMMAP.CodiceEsercizio = @CodiceEsercizioMasterPrecedente
+    ----AND IMMAP.CodiceEsercizio = @CodiceEsercizioMasterPrecedente
+    AND IMMAP.AnnoMaster = @AnnoMasterPrecedente
 ORDER BY DOMYS.AgenteProprietario,
     C.CodiceCliente,
     DOMYS.rn;

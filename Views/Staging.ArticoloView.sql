@@ -3,18 +3,18 @@ GO
 SET ANSI_NULLS ON
 GO
 
-
 CREATE VIEW [Staging].[ArticoloView]
 AS
 WITH ArticoloCategoriaMasterDettaglio
 AS (
     SELECT
         ACM.id_articolo,
+        ACM.Codice,
         ACM.CategoriaMaster,
         ACM.CodiceEsercizioMaster,
-        ROW_NUMBER() OVER (PARTITION BY ACM.id_articolo ORDER BY ACM.Percentuale DESC) AS rn
+        ROW_NUMBER() OVER (PARTITION BY ACM.Codice ORDER BY ACM.Percentuale DESC) AS rn
 
-    FROM Staging.ArticoloCategoriaMaster ACM
+    FROM Import.ArticoloCategoriaMaster ACM
 ),
 DatiArticolo
 AS (
@@ -36,7 +36,7 @@ AS (
     FROM Landing.COMETA_Articolo T
     LEFT JOIN Landing.COMETA_CategoriaCommercialeArticolo CCA ON CCA.id_cat_com_articolo = T.id_cat_com_articolo
     LEFT JOIN Landing.COMETA_CategoriaMerceologica CM ON CM.id_cat_merceologica = T.id_cat_merceologica
-    LEFT JOIN ArticoloCategoriaMasterDettaglio ACMD ON ACMD.id_articolo = T.id_articolo
+    LEFT JOIN ArticoloCategoriaMasterDettaglio ACMD ON ACMD.Codice = T.codice
         AND ACMD.rn = 1
     LEFT JOIN Landing.COMETA_MySolutionTrascodifica MST ON MST.codice = T.codice
 ),
