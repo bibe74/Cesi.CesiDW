@@ -2,7 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 CREATE   PROCEDURE [Dim].[usp_Merge_Cliente]
 AS
 BEGIN
@@ -125,7 +124,8 @@ BEGIN
         TGT.CapoAreaDefault = SRC.CapoAreaDefault,
         TGT.AgenteDefault = SRC.AgenteDefault,
         TGT.HasRoleMySolutionDemo = SRC.HasRoleMySolutionDemo,
-        TGT.HasRoleMySolutionInterno = SRC.HasRoleMySolutionInterno
+        TGT.HasRoleMySolutionInterno = SRC.HasRoleMySolutionInterno,
+        TGT.HasAbbonamento = SRC.HasAbbonamento
 
     WHEN NOT MATCHED
       THEN INSERT (
@@ -174,7 +174,8 @@ BEGIN
         CapoAreaDefault,
         AgenteDefault,
         HasRoleMySolutionDemo,
-        HasRoleMySolutionInterno
+        HasRoleMySolutionInterno,
+        HasAbbonamento
       )
       VALUES (
         SRC.IDSoggettoCommerciale,
@@ -222,7 +223,8 @@ BEGIN
         SRC.CapoAreaDefault,
         SRC.AgenteDefault,
         SRC.HasRoleMySolutionDemo,
-        SRC.HasRoleMySolutionInterno
+        SRC.HasRoleMySolutionInterno,
+        SRC.HasAbbonamento
       )
 
     OUTPUT
@@ -289,7 +291,8 @@ BEGIN
         TGT.CapoAreaDefault = SRC.CapoAreaDefault,
         TGT.AgenteDefault = SRC.AgenteDefault,
         TGT.HasRoleMySolutionDemo = SRC.HasRoleMySolutionDemo,
-        TGT.HasRoleMySolutionInterno = SRC.HasRoleMySolutionInterno
+        TGT.HasRoleMySolutionInterno = SRC.HasRoleMySolutionInterno,
+        TGT.HasAbbonamento = SRC.HasAbbonamento
 
     WHEN NOT MATCHED
       THEN INSERT (
@@ -338,7 +341,8 @@ BEGIN
         CapoAreaDefault,
         AgenteDefault,
         HasRoleMySolutionDemo,
-        HasRoleMySolutionInterno
+        HasRoleMySolutionInterno,
+        HasAbbonamento
       )
       VALUES (
         SRC.IDSoggettoCommerciale,
@@ -386,7 +390,8 @@ BEGIN
         SRC.CapoAreaDefault,
         SRC.AgenteDefault,
         SRC.HasRoleMySolutionDemo,
-        SRC.HasRoleMySolutionInterno
+        SRC.HasRoleMySolutionInterno,
+        SRC.HasAbbonamento
       )
 
     OUTPUT
@@ -507,6 +512,33 @@ BEGIN
     ----FROM Dim.Cliente C
     ----INNER JOIN DocumentiMySolutionNumerati DMSN ON DMSN.PKCliente = C.PKCliente
     ----    AND DMSN.rn = 1;
+
+    WITH AnnoCorrente
+    AS (
+        SELECT
+            MIN(D.PKData) AS PKDataInizioPeriodo,
+            MAX(D.PKData) AS PKDataFinePeriodo
+
+        FROM Dim.Data D
+        WHERE D.Anno = YEAR(CURRENT_TIMESTAMP)
+    ),
+    ClienteHasAbbonamento
+    AS (
+        SELECT DISTINCT
+            C.PKCliente,
+            CAST(1 AS BIT) AS HasAbbonamento
+
+        FROM Fact.Documenti D
+        INNER JOIN AnnoCorrente AC ON D.PKDataFineContratto >= AC.PKDataInizioPeriodo AND D.PKDataInizioContratto <= AC.PKDataFinePeriodo
+        INNER JOIN Dim.Cliente C ON C.PKCliente = D.PKCliente
+            AND C.IsDeleted = CAST(0 AS BIT)
+        WHERE D.Profilo = N'ORDINE CLIENTE'
+            AND D.IsDeleted = CAST(0 AS BIT)
+    )
+    UPDATE C
+    SET C.HasAbbonamento = COALESCE(CHA.HasAbbonamento, 0)
+    FROM Dim.Cliente C
+    LEFT JOIN ClienteHasAbbonamento CHA ON CHA.PKCliente = C.PKCliente;
 
     UPDATE audit.tables
     SET lastupdated_local = lastupdated_staging

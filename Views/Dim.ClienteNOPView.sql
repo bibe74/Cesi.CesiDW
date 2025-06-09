@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE   VIEW [Dim].[ClienteNOPView]
 AS
 WITH IscrizioniCorsi
@@ -56,6 +57,7 @@ AS (
             MSC.HasRoleMySolutionDemo,
             MSC.Username,
             MSC.HasRoleMySolutionInterno,
+            MSC.HasAbbonamento,
             ' '
         ))) AS ChangeHashKey,
         CURRENT_TIMESTAMP AS InsertDatetime,
@@ -110,7 +112,8 @@ AS (
         --MSC.IdCometa,
         --MSC.rnCustomerDESC,
         N'TODO' AS id_sog_commerciale,
-        MSC.HasRoleMySolutionInterno
+        MSC.HasRoleMySolutionInterno,
+        MSC.HasAbbonamento
 
     FROM Staging.MySolutionCustomer MSC
     LEFT JOIN Dim.Cliente CC ON CC.Email = MSC.Email
@@ -178,7 +181,8 @@ SELECT
     TD.CapoAreaDefault,
     TD.AgenteDefault,
     TD.HasRoleMySolutionDemo,
-    TD.HasRoleMySolutionInterno
+    TD.HasRoleMySolutionInterno,
+    TD.HasAbbonamento
 
 FROM TableData TD;
 GO
