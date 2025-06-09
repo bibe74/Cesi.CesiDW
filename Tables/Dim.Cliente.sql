@@ -49,7 +49,8 @@ CREATE TABLE [Dim].[Cliente]
 [AgenteDefault] [nvarchar] (60) COLLATE Latin1_General_CI_AS NOT NULL CONSTRAINT [DFT_Dim_Cliente_AgenteDefault] DEFAULT (N''),
 [HasRoleMySolutionDemo] [bit] NOT NULL CONSTRAINT [DFT_Dim_Cliente_HasRoleMySolutionDemo] DEFAULT ((0)),
 [HasRoleMySolutionInterno] [bit] NOT NULL CONSTRAINT [DFT_Dim_Cliente_HasRoleMySolutionInterno] DEFAULT ((0)),
-[HasAbbonamento] [bit] NOT NULL
+[HasAbbonamentoMySolution] [bit] NOT NULL CONSTRAINT [DFT_Dim_Cliente_HasAbbonamentoMySolution] DEFAULT ((0)),
+[HasAbbonamentoMIA] [bit] NOT NULL CONSTRAINT [DFT_Dim_Cliente_HasAbbonamentoMIA] DEFAULT ((0))
 ) ON [PRIMARY]
 GO
 ALTER TABLE [Dim].[Cliente] ADD CONSTRAINT [PK_Dim_Cliente] PRIMARY KEY CLUSTERED ([PKCliente]) ON [PRIMARY]

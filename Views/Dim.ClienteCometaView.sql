@@ -4,35 +4,7 @@ SET ANSI_NULLS ON
 GO
 CREATE   VIEW [Dim].[ClienteCometaView]
 AS
-WITH RuoloAbbonamento
-AS (
-    SELECT
-        CR.Id,
-        CR.Name
-
-    FROM Landing.MYSOLUTION_CustomerRole CR
-    WHERE CR.IsDeleted = CAST(0 AS BIT)
-        AND CR.Name IN (
-            N'MySolution.Lavoro',
-            N'MySolution.Fisco',
-            N'MySolution.MiaFisco',
-            N'MySolution.MiaLavoro'
-        )
-),
-ClientiAbbonamento
-AS (
-    SELECT DISTINCT
-        C.Email,
-        CAST(1 AS BIT) AS HasAbbonamento
-
-    FROM Landing.MYSOLUTION_Customer_CustomerRole_Mapping CCRM
-    INNER JOIN RuoloAbbonamento RA ON RA.Id = CCRM.CustomerRole_Id
-    INNER JOIN Landing.MYSOLUTION_Customer C ON C.Id = CCRM.Customer_Id
-        AND C.IsDeleted = CAST(0 AS BIT)
-        AND C.Email <> N''
-    WHERE CCRM.IsDeleted = CAST(0 AS BIT)
-),
-TableData
+WITH TableData
 AS (
     SELECT
         CC.id_sog_commerciale AS IDSoggettoCommerciale,
@@ -89,7 +61,6 @@ AS (
             ----CADBCAP.AgenteDefault,
             ----PA.Agente,
             PACA.Agente,
-            CA.HasAbbonamento,
             ' '
         ))) AS ChangeHashKey,
         CURRENT_TIMESTAMP AS InsertDatetime,
@@ -153,8 +124,7 @@ AS (
         ----COALESCE(CADBL.CapoAreaDefault, CADBCAP.CapoAreaDefault, PA.CapoArea, N'') AS CapoAreaDefault,
         COALESCE(PACA.CapoArea, N'') AS CapoAreaDefault,
         --COALESCE(CADBL.AgenteDefault, CADBCAP.AgenteDefault, PA.Agente, N'') AS AgenteDefault,
-        COALESCE(PACA.Agente, N'') AS AgenteDefault,
-        COALESCE(CA.HasAbbonamento, 0) AS HasAbbonamento
+        COALESCE(PACA.Agente, N'') AS AgenteDefault
 
     FROM Staging.CometaCustomer CC
     LEFT JOIN Import.Provincia P ON P.CodSiglaProvincia = CC.Provincia
@@ -169,7 +139,6 @@ AS (
     ----LEFT JOIN CapoAreaDefaultByCAP CADBCAP ON CADBCAP.IDProvincia = CC.provincia AND CADBCAP.CAP = CC.cap
     ----LEFT JOIN CapoAreaDefaultByLocalita CADBL ON CADBL.IDProvincia = CC.provincia AND CADBL.Localita = CC.localita
     LEFT JOIN Import.ProvinciaAgenteCapoArea PACA ON PACA.IDProvincia = CC.provincia
-    LEFT JOIN ClientiAbbonamento CA ON CA.Email = CC.Email
     WHERE CC.IsDeleted = CAST(0 AS BIT)
 )
 SELECT
@@ -221,7 +190,8 @@ SELECT
     TD.AgenteDefault,
     CAST(0 AS BIT) AS HasRoleMySolutionDemo,
     CAST(0 AS BIT) AS HasRoleMySolutionInterno,
-    TD.HasAbbonamento
+    CAST(0 AS BIT) AS HasAbbonamentoMySolution,
+    CAST(0 AS BIT) AS HasAbbonamentoMIA
 
 FROM TableData TD;
 GO

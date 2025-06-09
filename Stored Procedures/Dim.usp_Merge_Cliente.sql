@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE   PROCEDURE [Dim].[usp_Merge_Cliente]
 AS
 BEGIN
@@ -125,7 +126,8 @@ BEGIN
         TGT.AgenteDefault = SRC.AgenteDefault,
         TGT.HasRoleMySolutionDemo = SRC.HasRoleMySolutionDemo,
         TGT.HasRoleMySolutionInterno = SRC.HasRoleMySolutionInterno,
-        TGT.HasAbbonamento = SRC.HasAbbonamento
+        TGT.HasAbbonamentoMySolution = SRC.HasAbbonamentoMySolution,
+        TGT.HasAbbonamentoMIA = SRC.HasAbbonamentoMIA
 
     WHEN NOT MATCHED
       THEN INSERT (
@@ -175,7 +177,8 @@ BEGIN
         AgenteDefault,
         HasRoleMySolutionDemo,
         HasRoleMySolutionInterno,
-        HasAbbonamento
+        HasAbbonamentoMySolution,
+        HasAbbonamentoMIA
       )
       VALUES (
         SRC.IDSoggettoCommerciale,
@@ -224,7 +227,8 @@ BEGIN
         SRC.AgenteDefault,
         SRC.HasRoleMySolutionDemo,
         SRC.HasRoleMySolutionInterno,
-        SRC.HasAbbonamento
+        SRC.HasAbbonamentoMySolution,
+        SRC.HasAbbonamentoMIA
       )
 
     OUTPUT
@@ -292,7 +296,8 @@ BEGIN
         TGT.AgenteDefault = SRC.AgenteDefault,
         TGT.HasRoleMySolutionDemo = SRC.HasRoleMySolutionDemo,
         TGT.HasRoleMySolutionInterno = SRC.HasRoleMySolutionInterno,
-        TGT.HasAbbonamento = SRC.HasAbbonamento
+        TGT.HasAbbonamentoMySolution = SRC.HasAbbonamentoMySolution,
+        TGT.HasAbbonamentoMIA = SRC.HasAbbonamentoMIA
 
     WHEN NOT MATCHED
       THEN INSERT (
@@ -342,7 +347,8 @@ BEGIN
         AgenteDefault,
         HasRoleMySolutionDemo,
         HasRoleMySolutionInterno,
-        HasAbbonamento
+        HasAbbonamentoMySolution,
+        HasAbbonamentoMIA
       )
       VALUES (
         SRC.IDSoggettoCommerciale,
@@ -391,7 +397,8 @@ BEGIN
         SRC.AgenteDefault,
         SRC.HasRoleMySolutionDemo,
         SRC.HasRoleMySolutionInterno,
-        SRC.HasAbbonamento
+        SRC.HasAbbonamentoMySolution,
+        SRC.HasAbbonamentoMIA
       )
 
     OUTPUT
@@ -524,19 +531,25 @@ BEGIN
     ),
     ClienteHasAbbonamento
     AS (
-        SELECT DISTINCT
+        SELECT
             C.PKCliente,
-            CAST(1 AS BIT) AS HasAbbonamento
+            CAST(MAX(CASE WHEN A.Tipo IN (N'FISCO', N'FULL', N'LAVORO') THEN 1 ELSE 0 END) AS BIT) AS HasAbbonamentoMySolution,
+            CAST(MAX(CASE WHEN A.Tipo IN (N'MIAFISCO', N'MIAFULL', N'MIALAVORO') THEN 1 ELSE 0 END) AS BIT) AS HasAbbonamentoMIA
 
         FROM Fact.Documenti D
         INNER JOIN AnnoCorrente AC ON D.PKDataFineContratto >= AC.PKDataInizioPeriodo AND D.PKDataInizioContratto <= AC.PKDataFinePeriodo
         INNER JOIN Dim.Cliente C ON C.PKCliente = D.PKCliente
             AND C.IsDeleted = CAST(0 AS BIT)
+        INNER JOIN Dim.Articolo A ON A.PKArticolo = D.PKArticolo
+            AND A.IsDeleted = CAST(0 AS BIT)
         WHERE D.Profilo = N'ORDINE CLIENTE'
             AND D.IsDeleted = CAST(0 AS BIT)
+        GROUP BY C.PKCliente
     )
     UPDATE C
-    SET C.HasAbbonamento = COALESCE(CHA.HasAbbonamento, 0)
+    SET C.HasAbbonamentoMySolution = COALESCE(CHA.HasAbbonamentoMySolution, 0),
+        C.HasAbbonamentoMIA = COALESCE(CHA.HasAbbonamentoMIA, 0)
+
     FROM Dim.Cliente C
     LEFT JOIN ClienteHasAbbonamento CHA ON CHA.PKCliente = C.PKCliente;
 

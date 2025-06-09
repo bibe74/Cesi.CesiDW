@@ -27,8 +27,7 @@ CREATE TABLE [Staging].[MySolutionCustomer]
 [StateProvince] [nvarchar] (100) COLLATE Latin1_General_CI_AS NULL,
 [rnCustomerDESC] [bigint] NULL,
 [HasRoleMySolutionDemo] [bit] NOT NULL,
-[HasRoleMySolutionInterno] [bit] NOT NULL,
-[HasAbbonamento] [int] NULL
+[HasRoleMySolutionInterno] [bit] NOT NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [Staging].[MySolutionCustomer] ADD CONSTRAINT [PK_Staging_MySolutionCustomer] PRIMARY KEY CLUSTERED ([UpdateDatetime], [Id]) ON [PRIMARY]

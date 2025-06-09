@@ -25,32 +25,7 @@ SELECT TOP (1) * FROM Landing.MYSOLUTION_Customer_CustomerRole_Mapping;
 
 CREATE   VIEW [Staging].[MySolutionCustomerView]
 AS
-WITH RuoloAbbonamento
-AS (
-    SELECT
-        CR.Id,
-        CR.Name
-
-    FROM Landing.MYSOLUTION_CustomerRole CR
-    WHERE CR.IsDeleted = CAST(0 AS BIT)
-        AND CR.Name IN (
-            N'MySolution.Lavoro',
-            N'MySolution.Fisco',
-            N'MySolution.MiaFisco',
-            N'MySolution.MiaLavoro'
-        )
-),
-ClientiAbbonamento
-AS (
-    SELECT DISTINCT
-        CCRM.Customer_Id,
-        CAST(1 AS BIT) AS HasAbbonamento
-
-    FROM Landing.MYSOLUTION_Customer_CustomerRole_Mapping CCRM
-    INNER JOIN RuoloAbbonamento RA ON RA.Id = CCRM.CustomerRole_Id
-    WHERE CCRM.IsDeleted = CAST(0 AS BIT)
-),
-TableDataDetail
+WITH TableDataDetail
 AS (
     SELECT
         C.Id,
@@ -79,7 +54,6 @@ AS (
             SP.Name,
             CCRM11.Customer_Id,
             CCRM12.Customer_Id,
-            CABB.HasAbbonamento,
             ' '
         ))) AS ChangeHashKey,
         CURRENT_TIMESTAMP AS InsertDatetime,
@@ -105,8 +79,7 @@ AS (
         ROW_NUMBER() OVER (PARTITION BY C.Id ORDER BY A.Id DESC) AS rnAddressDESC,
         ROW_NUMBER() OVER (PARTITION BY C.Username ORDER BY C.Id DESC, A.Id DESC) AS rnCustomerDESC,
         CASE WHEN CCRM11.Customer_Id IS NOT NULL THEN 1 ELSE 0 END AS HasRoleMySolutionDemo,
-        CASE WHEN CCRM12.Customer_Id IS NOT NULL THEN 1 ELSE 0 END AS HasRoleMySolutionInterno,
-        COALESCE(CABB.HasAbbonamento, 0) AS HasAbbonamento
+        CASE WHEN CCRM12.Customer_Id IS NOT NULL THEN 1 ELSE 0 END AS HasRoleMySolutionInterno
 
     FROM Landing.MYSOLUTION_Customer C
     LEFT JOIN Landing.MYSOLUTION_CustomerAddresses CA ON CA.Customer_Id = C.Id
@@ -159,7 +132,6 @@ AS (
     LEFT JOIN Landing.MYSOLUTION_Customer_CustomerRole_Mapping CCRM12 ON CCRM12.Customer_Id = C.Id
         AND CCRM12.CustomerRole_Id = 12 -- 12: MySolution.Interno
         AND CCRM12.IsDeleted = CAST(0 AS BIT)
-    LEFT JOIN ClientiAbbonamento CABB ON CABB.Customer_Id = C.Id
     WHERE C.IsDeleted = CAST(0 AS BIT)
 )
 SELECT
@@ -195,8 +167,7 @@ SELECT
     TDD.StateProvince,
     TDD.rnCustomerDESC,
     TDD.HasRoleMySolutionDemo,
-    TDD.HasRoleMySolutionInterno,
-    TDD.HasAbbonamento
+    TDD.HasRoleMySolutionInterno
 
 FROM TableDataDetail TDD
 WHERE TDD.rnAddressDESC = 1;
