@@ -127,7 +127,8 @@ BEGIN
         TGT.HasRoleMySolutionDemo = SRC.HasRoleMySolutionDemo,
         TGT.HasRoleMySolutionInterno = SRC.HasRoleMySolutionInterno,
         TGT.HasAbbonamentoMySolution = SRC.HasAbbonamentoMySolution,
-        TGT.HasAbbonamentoMIA = SRC.HasAbbonamentoMIA
+        TGT.HasAbbonamentoMIA = SRC.HasAbbonamentoMIA,
+        TGT.AgenteZoho = SRC.AgenteZoho
 
     WHEN NOT MATCHED
       THEN INSERT (
@@ -178,7 +179,8 @@ BEGIN
         HasRoleMySolutionDemo,
         HasRoleMySolutionInterno,
         HasAbbonamentoMySolution,
-        HasAbbonamentoMIA
+        HasAbbonamentoMIA,
+        AgenteZoho
       )
       VALUES (
         SRC.IDSoggettoCommerciale,
@@ -228,7 +230,8 @@ BEGIN
         SRC.HasRoleMySolutionDemo,
         SRC.HasRoleMySolutionInterno,
         SRC.HasAbbonamentoMySolution,
-        SRC.HasAbbonamentoMIA
+        SRC.HasAbbonamentoMIA,
+        SRC.AgenteZoho
       )
 
     OUTPUT

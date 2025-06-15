@@ -61,6 +61,7 @@ AS (
             ----CADBCAP.AgenteDefault,
             ----PA.Agente,
             PACA.Agente,
+            CASE WHEN COALESCE(GA.CapoArea, N'') = N'' THEN COALESCE(PACA.CapoArea, N'') ELSE GA.CapoArea END,
             ' '
         ))) AS ChangeHashKey,
         CURRENT_TIMESTAMP AS InsertDatetime,
@@ -124,7 +125,8 @@ AS (
         ----COALESCE(CADBL.CapoAreaDefault, CADBCAP.CapoAreaDefault, PA.CapoArea, N'') AS CapoAreaDefault,
         COALESCE(PACA.CapoArea, N'') AS CapoAreaDefault,
         --COALESCE(CADBL.AgenteDefault, CADBCAP.AgenteDefault, PA.Agente, N'') AS AgenteDefault,
-        COALESCE(PACA.Agente, N'') AS AgenteDefault
+        COALESCE(PACA.Agente, N'') AS AgenteDefault,
+        CASE WHEN COALESCE(GA.CapoArea, N'') = N'' THEN COALESCE(PACA.CapoArea, N'') ELSE GA.CapoArea END AS AgenteZoho
 
     FROM Staging.CometaCustomer CC
     LEFT JOIN Import.Provincia P ON P.CodSiglaProvincia = CC.Provincia
@@ -191,7 +193,8 @@ SELECT
     CAST(0 AS BIT) AS HasRoleMySolutionDemo,
     CAST(0 AS BIT) AS HasRoleMySolutionInterno,
     CAST(0 AS BIT) AS HasAbbonamentoMySolution,
-    CAST(0 AS BIT) AS HasAbbonamentoMIA
+    CAST(0 AS BIT) AS HasAbbonamentoMIA,
+    TD.AgenteZoho
 
 FROM TableData TD;
 GO

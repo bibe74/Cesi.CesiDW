@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE   VIEW [Dim].[ClienteNOPView]
 AS
 WITH IscrizioniCorsi
@@ -110,7 +111,8 @@ AS (
         --MSC.IdCometa,
         --MSC.rnCustomerDESC,
         N'TODO' AS id_sog_commerciale,
-        MSC.HasRoleMySolutionInterno
+        MSC.HasRoleMySolutionInterno,
+        COALESCE(PACA.CapoArea, N'') AS AgenteZoho
 
     FROM Staging.MySolutionCustomer MSC
     LEFT JOIN Dim.Cliente CC ON CC.Email = MSC.Email
@@ -180,7 +182,8 @@ SELECT
     TD.HasRoleMySolutionDemo,
     TD.HasRoleMySolutionInterno,
     CAST(0 AS BIT) AS HasAbbonamentoMySolution,
-    CAST(0 AS BIT) AS HasAbbonamentoMIA
+    CAST(0 AS BIT) AS HasAbbonamentoMIA,
+    TD.AgenteZoho
 
 FROM TableData TD;
 GO
