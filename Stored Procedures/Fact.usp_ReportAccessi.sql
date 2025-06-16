@@ -57,10 +57,9 @@ BEGIN
         FROM Fact.Accessi A
         INNER JOIN Dim.ClienteAccessi CA ON CA.PKClienteAccessi = A.PKCliente
         INNER JOIN Dim.Cliente C ON C.PKCliente = CA.PKCliente
-        INNER JOIN Dim.GruppoAgenti GA ON GA.PKGruppoAgenti = C.PKGruppoAgenti
             AND (
                 @Agente IS NULL
-                OR GA.CapoArea = @Agente
+                OR C.AgenteZoho = @Agente
             )
         INNER JOIN SettimaneNumerate SN ON A.PKData BETWEEN SN.PKDataLunedi AND SN.PKDataDomenica
         WHERE A.IsDeleted = CAST(0 AS BIT)
@@ -78,12 +77,11 @@ BEGIN
 
         FROM Fact.Accessi A
         INNER JOIN Dim.ClienteAccessi CA ON CA.PKClienteAccessi = A.PKCliente
+        INNER JOIN Dim.Cliente C ON C.PKCliente = CA.PKCliente
             AND (
                 @Agente IS NULL
-                OR CA.Agente = @Agente
+                OR C.AgenteZoho = @Agente
             )
-        INNER JOIN Dim.Cliente C ON C.PKCliente = CA.PKCliente
-        --INNER JOIN Dim.GruppoAgenti GA ON GA.PKGruppoAgenti = C.PKGruppoAgenti
         WHERE A.IsDeleted = CAST(0 AS BIT)
             AND A.PKData BETWEEN DATEADD(MONTH, -3, @PKDataFinePeriodo) AND @PKDataFinePeriodo
         GROUP BY C.PKCliente
@@ -91,33 +89,34 @@ BEGIN
     Clienti
     AS (
         SELECT
-            C.PKCliente,
-            C.CodiceCliente,
-            C.Agente,
-            C.RagioneSociale,
-            C.Email,
-            C.Telefono,
-            C.TipoCliente,
-            C.Localita AS Comune,
-            C.IDProvincia AS Provincia,
-            C.Regione,
+            CA.PKCliente,
+            CA.CodiceCliente,
+            C.AgenteZoho AS Agente,
+            CA.RagioneSociale,
+            CA.Email,
+            CA.Telefono,
+            CA.TipoCliente,
+            CA.Localita AS Comune,
+            CA.IDProvincia AS Provincia,
+            CA.Regione,
             DIC.Data_IT AS DataInizio,
             DFC.Data_IT AS DataScadenza
 
-        FROM Dim.ClienteAccessi C
-        INNER JOIN Dim.GruppoAgenti GA ON GA.PKGruppoAgenti = C.PKGruppoAgenti
-        INNER JOIN Dim.Data DIC ON DIC.PKData = C.PKDataInizioContratto
-        INNER JOIN Dim.Data DFC ON DFC.PKData = C.PKDataFineContratto
-        WHERE C.IsDeleted = CAST(0 AS BIT)
-            AND C.IsAbbonato = CAST(1 AS BIT)
-            AND C.PKDataFineContratto >= @PKDataInizioPeriodo
-            AND (
-                @TipoCliente IS NULL
-                OR C.TipoCliente = @TipoCliente
-            )
+        FROM Dim.ClienteAccessi CA
+        INNER JOIN Dim.Cliente C ON C.PKCliente = CA.PKCliente
             AND (
                 @Agente IS NULL
-                OR C.Agente = @Agente
+                OR C.AgenteZoho = @Agente
+            )
+        INNER JOIN Dim.GruppoAgenti GA ON GA.PKGruppoAgenti = CA.PKGruppoAgenti
+        INNER JOIN Dim.Data DIC ON DIC.PKData = CA.PKDataInizioContratto
+        INNER JOIN Dim.Data DFC ON DFC.PKData = CA.PKDataFineContratto
+        WHERE CA.IsDeleted = CAST(0 AS BIT)
+            AND CA.IsAbbonato = CAST(1 AS BIT)
+            AND CA.PKDataFineContratto >= @PKDataInizioPeriodo
+            AND (
+                @TipoCliente IS NULL
+                OR CA.TipoCliente = @TipoCliente
             )
     )
     SELECT
