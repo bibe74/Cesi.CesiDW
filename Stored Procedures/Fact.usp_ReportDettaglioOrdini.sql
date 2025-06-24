@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 /**
  * @storedprocedure Fact.usp_ReportDettaglioOrdini
 */
@@ -387,7 +388,7 @@ SELECT
     RD.ProvvigioneTeorica,
     RD.LiquidazioneProvvigioneTeorica,
     RD.AgenteProprietario,
-    RD.TotaleRinnovo,
+    SUM(RD.TotaleRinnovo) AS TotaleRinnovo,
     RD.DataRinnovo,
     RD.TipoFatturazioneRinnovo,
     RD.DurataMesiRinnovo
@@ -432,7 +433,7 @@ GROUP BY RD.CodiceCliente,
     RD.ProvvigioneTeorica,
     RD.LiquidazioneProvvigioneTeorica,
     RD.AgenteProprietario,
-    RD.TotaleRinnovo,
+    --RD.TotaleRinnovo,
     RD.DataRinnovo,
     RD.TipoFatturazioneRinnovo,
     RD.DurataMesiRinnovo
