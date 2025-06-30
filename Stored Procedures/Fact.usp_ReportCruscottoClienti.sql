@@ -40,7 +40,7 @@ SELECT @PKDataInizioUltimoSemestre = DATEADD(MONTH, -6, DATEADD(DAY, 1, @PKDataF
 
 SET @PKDataInizioPeriodo = @PKDataInizioUltimoSemestre;
 
-SELECT @AnnoCorrente = YEAR(@PKDataFinePeriodo) - 1;
+SELECT @AnnoCorrente = YEAR(@PKDataFinePeriodo);
 
 ----SELECT @CodiceEsercizioMasterCorrente = CONVERT(NVARCHAR(4), @AnnoCorrente) + N'/' + CONVERT(NVARCHAR(4), @AnnoCorrente + 1),
 ----    @CodiceEsercizioMasterPrecedente = CONVERT(NVARCHAR(4), @AnnoCorrente - 1) + N'/' + CONVERT(NVARCHAR(4), @AnnoCorrente);
@@ -142,31 +142,38 @@ AS (
         DFC.Data_IT,
         D.PKDataCompetenza,
         COALESCE(I.Insoluto, 0.0)
+),
+ElencoOrdini
+AS (
+    SELECT
+        O.IDDocumento,
+        O.NumeroDocumento,
+        O.PKCliente,
+        O.AgenteProprietario,
+        O.TipoAbbonamento,
+        O.MacroTipoAbbonamento,
+        O.QuoteFormazione,
+        O.Azione,
+        O.ClausolaRinnovoAutomatico,
+        O.PKDataInizioContratto,
+        O.DataInizioContratto,
+        O.PKDataFineContratto,
+        O.DataFineContratto,
+        O.PKDataCompetenza,
+        O.TotaleDocumento,
+        O.Insoluto,
+        ROW_NUMBER() OVER (PARTITION BY O.PKCliente ORDER BY O.PKDataInizioContratto DESC, O.NumeroDocumento DESC) AS rn
+
+    FROM Ordini O
+    WHERE O.PKDataInizioContratto <= @DataFineAnnoCorrente
+        AND O.PKDataFineContratto >= @DataInizioAnnoCorrente
 )
 SELECT
-    O.IDDocumento,
-    O.NumeroDocumento,
-    O.PKCliente,
-    O.AgenteProprietario,
-    O.TipoAbbonamento,
-    O.MacroTipoAbbonamento,
-    O.QuoteFormazione,
-    O.Azione,
-    O.ClausolaRinnovoAutomatico,
-    O.PKDataInizioContratto,
-    O.DataInizioContratto,
-    O.PKDataFineContratto,
-    O.DataFineContratto,
-    O.PKDataCompetenza,
-    O.TotaleDocumento,
-    O.Insoluto,
-    ROW_NUMBER() OVER (PARTITION BY O.PKCliente ORDER BY O.NumeroDocumento) AS rn
+    *
 
 INTO #DettaglioOrdini
-
-FROM Ordini O
-WHERE O.PKDataInizioContratto <= @DataFineAnnoCorrente
-    AND O.PKDataFineContratto >= @DataInizioAnnoCorrente;
+FROM ElencoOrdini EO
+WHERE EO.rn = 1;
 
 CREATE NONCLUSTERED INDEX IX_DettaglioOrdini_PKCliente_MacroTipoAbbonamento ON #DettaglioOrdini (PKCliente, MacroTipoAbbonamento);
 
@@ -242,7 +249,8 @@ AS (
         C.Localita AS Citta,
         C.Provincia,
         C.PKDataDisdetta,
-        DDIS.Data_IT AS DataDisdetta
+        DDIS.Data_IT AS DataDisdetta,
+        C.Telefono
 
     FROM Dim.Cliente C
     INNER JOIN Dim.Data DDIS ON DDIS.PKData = C.PKDataDisdetta
@@ -276,6 +284,7 @@ SELECT
     C.Provincia,
     C.PKDataDisdetta,
     C.DataDisdetta,
+    C.Telefono,
 
     DOMYS.IDDocumento,
     --DO.NumeroDocumento,

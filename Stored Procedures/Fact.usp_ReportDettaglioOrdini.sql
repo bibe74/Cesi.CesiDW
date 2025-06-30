@@ -2,7 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 /**
  * @storedprocedure Fact.usp_ReportDettaglioOrdini
 */
@@ -18,7 +17,9 @@ CREATE   PROCEDURE [Fact].[usp_ReportDettaglioOrdini] (
     @CodiceCliente NVARCHAR(10) = NULL,
     @PartitaIVA NVARCHAR(20) = NULL,
     @Azione NVARCHAR(60) = NULL,
-    @NascondiOrdiniRinnovati BIT = 0
+    @NascondiOrdiniRinnovati BIT = 0,
+    @HasAbbonamentoMySolution BIT = NULL,
+    @HasAbbonamentoMIA BIT = NULL
 )
 AS
 BEGIN
@@ -134,6 +135,14 @@ AS (
         AND (
             @PartitaIVA IS NULL
             OR C.PartitaIVA = @PartitaIVA
+        )
+        AND (
+            @HasAbbonamentoMySolution IS NULL
+            OR C.HasAbbonamentoMySolution = @HasAbbonamentoMySolution
+        )
+        AND (
+            @HasAbbonamentoMIA IS NULL
+            OR C.HasAbbonamentoMIA = @HasAbbonamentoMIA
         )
     INNER JOIN Dim.GruppoAgenti GA ON GA.PKGruppoAgenti = D.PKGruppoAgenti
         AND (

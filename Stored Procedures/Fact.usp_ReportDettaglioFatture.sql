@@ -16,7 +16,9 @@ CREATE   PROCEDURE [Fact].[usp_ReportDettaglioFatture] (
     @RagioneSociale NVARCHAR(120) = NULL,
     @CodiceCliente NVARCHAR(10) = NULL,
     @PartitaIVA NVARCHAR(20) = NULL,
-    @TipoReport CHAR(1) = NULL -- 'F': Formazione, 'M': My Solution
+    @TipoReport CHAR(1) = NULL, -- 'F': Formazione, 'M': My Solution
+    @HasAbbonamentoMySolution BIT = NULL,
+    @HasAbbonamentoMIA BIT = NULL
 )
 AS
 BEGIN
@@ -112,6 +114,14 @@ AS (
         AND (
             @PartitaIVA IS NULL
             OR C.PartitaIVA = @PartitaIVA
+        )
+        AND (
+            @HasAbbonamentoMySolution IS NULL
+            OR C.HasAbbonamentoMySolution = @HasAbbonamentoMySolution
+        )
+        AND (
+            @HasAbbonamentoMIA IS NULL
+            OR C.HasAbbonamentoMIA = @HasAbbonamentoMIA
         )
     INNER JOIN Dim.GruppoAgenti GA ON GA.PKGruppoAgenti = D.PKGruppoAgenti
         AND (
