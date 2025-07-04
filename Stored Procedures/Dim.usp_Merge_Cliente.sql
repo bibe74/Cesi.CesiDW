@@ -2,7 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 CREATE   PROCEDURE [Dim].[usp_Merge_Cliente]
 AS
 BEGIN
@@ -52,6 +51,11 @@ BEGIN
     UPDATE T
     SET T.PKCliente = CNIC.PKClienteCometa
     FROM Fact.Scadenze T
+    INNER JOIN Staging.ClientiNOPInCometa CNIC ON CNIC.PKClienteNOP = T.PKCliente;
+
+    UPDATE T
+    SET T.PKCliente = CNIC.PKClienteCometa
+    FROM Fact.CreditiOpenAI T
     INNER JOIN Staging.ClientiNOPInCometa CNIC ON CNIC.PKClienteNOP = T.PKCliente;
 
     DELETE C
