@@ -162,7 +162,7 @@ AS (
         O.PKDataCompetenza,
         O.TotaleDocumento,
         O.Insoluto,
-        ROW_NUMBER() OVER (PARTITION BY O.PKCliente ORDER BY O.PKDataInizioContratto DESC, O.NumeroDocumento DESC) AS rn
+        ROW_NUMBER() OVER (PARTITION BY O.PKCliente, O.MacroTipoAbbonamento ORDER BY O.PKDataInizioContratto DESC, O.NumeroDocumento DESC) AS rn
 
     FROM Ordini O
     WHERE O.PKDataInizioContratto <= @DataFineAnnoCorrente
@@ -315,7 +315,7 @@ SELECT
     IMAP.NumeroIscritti AS NumeroIscrittiAnnoPrecedente,
     IMAP.ImportoTotale AS ImportoTotaleAnnoPrecedente,
     ----@CodiceEsercizioMasterCorrente AS CodiceEsercizioCorrente,
-    CONVERT(NVARCHAR(4), @AnnoMasterPrecedente) AS CodiceEsercizioCorrente,
+    CONVERT(NVARCHAR(4), @AnnoMasterCorrente) AS CodiceEsercizioCorrente,
     IMMAP.NumeroIscritti AS NumeroIscrittiMiniMasterAnnoPrecedente,
     IMMAP.ImportoTotale AS ImportoTotaleMiniMasterAnnoPrecedente,
     IMAC.NumeroIscritti AS NumeroIscrittiAnnoCorrente,
