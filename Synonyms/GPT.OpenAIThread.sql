@@ -1,0 +1,2 @@
+CREATE SYNONYM [GPT].[OpenAIThread] FOR [MYSOLUTIONPRODUZIONE2].[dbGPT].[dbo].[OpenAIThread]
+GO
