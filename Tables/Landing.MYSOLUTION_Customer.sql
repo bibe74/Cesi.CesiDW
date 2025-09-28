@@ -35,7 +35,8 @@ CREATE TABLE [Landing].[MYSOLUTION_Customer]
 [MysolutionSubscriptionQuote] [int] NULL,
 [SendRiqualification] [bit] NOT NULL,
 [IsSpecial] [bit] NOT NULL,
-[DateExpiration] [datetime2] NULL
+[DateExpiration] [datetime2] NULL,
+[StateProvinceId] [int] NOT NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [Landing].[MYSOLUTION_Customer] ADD CONSTRAINT [PK_Landing_MYSOLUTION_Customer] PRIMARY KEY CLUSTERED ([UpdateDatetime], [Id]) ON [PRIMARY]

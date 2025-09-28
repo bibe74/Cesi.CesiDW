@@ -45,7 +45,8 @@ BEGIN
         TGT.MysolutionSubscriptionQuote = SRC.MysolutionSubscriptionQuote,
         TGT.SendRiqualification = SRC.SendRiqualification,
         TGT.IsSpecial = SRC.IsSpecial,
-        TGT.DateExpiration = SRC.DateExpiration
+        TGT.DateExpiration = SRC.DateExpiration,
+        TGT.StateProvinceId = SRC.StateProvinceId
 
     WHEN NOT MATCHED AND SRC.IsDeleted = CAST(0 AS BIT)
       THEN INSERT VALUES (
@@ -86,7 +87,8 @@ BEGIN
         MysolutionSubscriptionQuote,
         SendRiqualification,
         IsSpecial,
-        DateExpiration
+        DateExpiration,
+        StateProvinceId
       )
 
     WHEN NOT MATCHED BY SOURCE

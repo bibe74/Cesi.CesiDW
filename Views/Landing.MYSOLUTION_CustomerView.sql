@@ -41,6 +41,7 @@ AS (
             SendRiqualification,
             IsSpecial,
             DateExpiration,
+            StateProvinceId,
             ' '
         ))) AS ChangeHashKey,
         CURRENT_TIMESTAMP AS InsertDatetime,
@@ -72,7 +73,8 @@ AS (
         MysolutionSubscriptionQuote,
         SendRiqualification,
         IsSpecial,
-        DateExpiration
+        DateExpiration,
+        StateProvinceId
 
     FROM MYSOLUTION.Customer
     WHERE Active = CAST(1 AS BIT)
@@ -120,7 +122,8 @@ SELECT
     TD.MysolutionSubscriptionQuote,
     TD.SendRiqualification,
     TD.IsSpecial,
-    TD.DateExpiration
+    TD.DateExpiration,
+    TD.StateProvinceId
 
 FROM TableData TD;
 GO

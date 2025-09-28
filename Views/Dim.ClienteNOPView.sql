@@ -2,7 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 CREATE   VIEW [Dim].[ClienteNOPView]
 AS
 WITH IscrizioniCorsi
@@ -73,7 +72,7 @@ AS (
         MSC.Company AS RagioneSociale,
         MSC.CodiceFiscale,
         LEFT(MSC.VATNumber, 20) AS PartitaIVA,
-        MSC.StreetAddress AS Indirizzo,
+        LEFT(MSC.StreetAddress, 120) AS Indirizzo,
         LEFT(MSC.ZipPostalCode, 10) AS CAP,
         MSC.City AS Localita,
         --MSC.StateProvinceId,
