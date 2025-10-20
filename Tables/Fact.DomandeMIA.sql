@@ -10,7 +10,7 @@ CREATE TABLE [Fact].[DomandeMIA]
 [UpdateDatetime] [datetime] NOT NULL,
 [IsDeleted] [bit] NOT NULL,
 [PKDataCreazione] [date] NOT NULL,
-[Testo] [nvarchar] (2000) COLLATE Latin1_General_CI_AS NULL,
+[Testo] [nvarchar] (4000) COLLATE Latin1_General_CI_AS NULL,
 [IsDomanda] [bit] NOT NULL,
 [Area] [nvarchar] (80) COLLATE Latin1_General_CI_AS NULL,
 [Email] [nvarchar] (60) COLLATE Latin1_General_CI_AS NULL

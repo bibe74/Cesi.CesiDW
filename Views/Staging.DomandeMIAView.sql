@@ -2,7 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 CREATE   VIEW [Staging].[DomandeMIAView]
 AS
 WITH Clienti
@@ -52,7 +51,7 @@ AS (
                         ' '
                     ),
                     0,
-                    2000
+                    4000
                 )
             )
         ) AS Testo,
