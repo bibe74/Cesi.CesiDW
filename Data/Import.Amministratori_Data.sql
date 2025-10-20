@@ -7,6 +7,5 @@ INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALU
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Loprevite Antonio', N'CESI\Antonio Loprevite', N'antonio.loprevite@cesimultimedia.com')
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'SQL Administrator', N'CESI\sadmin', N'')
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Turelli Alberto', N'CESI\Alberto Turelli', N'alberto.turelli@gmail.com')
-INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Turelli Alberto (Metra)', N'METRA\bs_turelli', N'')
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Turolla Paola', N'CESI\Paola Turolla', N'paola.turolla@cesimultimedia.com')
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Valentina Borroni', N'CESI\Valentina Borroni', N'valentina.borroni@cesimultimedia.it')

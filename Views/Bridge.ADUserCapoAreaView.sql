@@ -2,6 +2,12 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
+/**
+ * @table Bridge.ADUserCapoArea
+ * @description Tabella di bridge ADUser / CapoArea
+*/
+
 CREATE   VIEW [Bridge].[ADUserCapoAreaView]
 AS
 WITH CapiArea
