@@ -3,6 +3,7 @@ INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALU
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Cipriani Valentina', N'CESI\Valentina Cipriani', N'valentina.cipriani@cesimultimedia.it')
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Eleonora Soravia', N'CESI\Eleonora Soravia', N'eleonora.soravia@cesimultimedia.com')
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Giuggioli Andrea', N'CESI\Andrea Giuggioli', N'andrea.giuggioli@cesimultimedia.com')
+INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Mastropietro Nicola', N'CESI\Nicola Mastropietro', N'nicola.mastropietro@cesimultimedia.it')
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Mottica Gabriella', N'CESI\Gabriella Mottica', N'gabriella.mottica@cesimultimedia.it')
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'SQL Administrator', N'CESI\sadmin', N'')
 INSERT INTO [Import].[Amministratori] ([Amministratore], [ADUser], [Email]) VALUES (N'Turelli Alberto', N'CESI\Alberto Turelli', N'alberto.turelli@gmail.com')
