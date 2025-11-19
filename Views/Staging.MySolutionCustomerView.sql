@@ -55,6 +55,8 @@ AS (
             COALESCE(SPC.Name, SP.Name, A.StateProvince),
             CCRM11.Customer_Id,
             CCRM12.Customer_Id,
+            CONVERT(DATE, C.CreatedOnUtc),
+            CONVERT(DATE, C.DateExpiration),
             ' '
         ))) AS ChangeHashKey,
         CURRENT_TIMESTAMP AS InsertDatetime,
@@ -80,7 +82,9 @@ AS (
         ROW_NUMBER() OVER (PARTITION BY C.Id ORDER BY A.Id DESC) AS rnAddressDESC,
         ROW_NUMBER() OVER (PARTITION BY C.Username ORDER BY C.Id DESC, A.Id DESC) AS rnCustomerDESC,
         CASE WHEN CCRM11.Customer_Id IS NOT NULL THEN 1 ELSE 0 END AS HasRoleMySolutionDemo,
-        CASE WHEN CCRM12.Customer_Id IS NOT NULL THEN 1 ELSE 0 END AS HasRoleMySolutionInterno
+        CASE WHEN CCRM12.Customer_Id IS NOT NULL THEN 1 ELSE 0 END AS HasRoleMySolutionInterno,
+        CONVERT(DATE, C.CreatedOnUtc) AS CreatedOnUtc,
+        CONVERT(DATE, C.DateExpiration) AS DateExpiration
 
     FROM Landing.MYSOLUTION_Customer C
     LEFT JOIN Landing.MYSOLUTION_CustomerAddresses CA ON CA.Customer_Id = C.Id
@@ -170,7 +174,9 @@ SELECT
     TDD.StateProvince,
     TDD.rnCustomerDESC,
     TDD.HasRoleMySolutionDemo,
-    TDD.HasRoleMySolutionInterno
+    TDD.HasRoleMySolutionInterno,
+    TDD.CreatedOnUtc,
+    TDD.DateExpiration
 
 FROM TableDataDetail TDD
 WHERE TDD.rnAddressDESC = 1;

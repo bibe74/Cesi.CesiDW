@@ -23,11 +23,13 @@ CREATE TABLE [Staging].[MySolutionCustomer]
 [City] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
 [CountryId] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
 [Country] [nvarchar] (100) COLLATE Latin1_General_CI_AS NULL,
-[StateProvinceId] [nvarchar] (max) COLLATE Latin1_General_CI_AS NULL,
+[StateProvinceId] [int] NULL,
 [StateProvince] [nvarchar] (100) COLLATE Latin1_General_CI_AS NULL,
 [rnCustomerDESC] [bigint] NULL,
 [HasRoleMySolutionDemo] [bit] NOT NULL,
-[HasRoleMySolutionInterno] [bit] NOT NULL
+[HasRoleMySolutionInterno] [bit] NOT NULL,
+[CreatedOnUtc] [date] NULL,
+[DateExpiration] [date] NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [Staging].[MySolutionCustomer] ADD CONSTRAINT [PK_Staging_MySolutionCustomer] PRIMARY KEY CLUSTERED ([UpdateDatetime], [Id]) ON [PRIMARY]
