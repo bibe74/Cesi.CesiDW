@@ -205,7 +205,9 @@ AS (
         COALESCE(DD.motivo_disdetta, N'') AS motivo_disdetta,
         COALESCE(TDT.num_riferimento, N'') AS Telefono,
         COALESCE(TDC.num_riferimento, N'') AS Cellulare,
-        COALESCE(TDF.num_riferimento, N'') AS Fax
+        COALESCE(TDF.num_riferimento, N'') AS Fax,
+        COALESCE(SC.id_cat_com_sc, N'') AS IDProfessione,
+        COALESCE(CCSC.descrizione, CASE WHEN COALESCE(SC.id_cat_com_sc, N'') = N'' THEN N'' ELSE N'<???>' END) AS Professione
 
     FROM Landing.COMETA_SoggettoCommerciale SC
     INNER JOIN Landing.COMETA_Anagrafica A ON A.id_anagrafica = SC.id_anagrafica
@@ -225,6 +227,8 @@ AS (
     LEFT JOIN TelefonoDettaglio TDF ON TDF.id_anagrafica = SC.id_anagrafica
         AND TDF.tipo = 'F'
         AND TDF.rn = 1
+    LEFT JOIN Landing.COMETA_CategoriaCommercialeSoggettoCommerciale CCSC ON CCSC.id_cat_com_sc = SC.id_cat_com_sc
+        AND CCSC.IsDeleted = CAST(0 AS BIT)
 )
 SELECT
     -- Chiavi
@@ -268,7 +272,9 @@ SELECT
     TD.motivo_disdetta,
     TD.Telefono,
     TD.Cellulare,
-    TD.Fax
+    TD.Fax,
+    TD.IDProfessione,
+    TD.Professione
 
 FROM TableData TD;
 GO

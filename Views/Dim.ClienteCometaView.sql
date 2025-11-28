@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE   VIEW [Dim].[ClienteCometaView]
 AS
 WITH TableData
@@ -62,6 +63,8 @@ AS (
             ----PA.Agente,
             PACA.Agente,
             CASE WHEN COALESCE(GA.CapoArea, N'') = N'' THEN COALESCE(PACA.CapoArea, N'') ELSE GA.CapoArea END,
+            CC.IDProfessione,
+            CC.Professione,
             ' '
         ))) AS ChangeHashKey,
         CURRENT_TIMESTAMP AS InsertDatetime,
@@ -126,7 +129,9 @@ AS (
         COALESCE(PACA.CapoArea, N'') AS CapoAreaDefault,
         --COALESCE(CADBL.AgenteDefault, CADBCAP.AgenteDefault, PA.Agente, N'') AS AgenteDefault,
         COALESCE(PACA.Agente, N'') AS AgenteDefault,
-        CASE WHEN COALESCE(GA.CapoArea, N'') = N'' THEN COALESCE(PACA.CapoArea, N'') ELSE GA.CapoArea END AS AgenteZoho
+        CASE WHEN COALESCE(GA.CapoArea, N'') = N'' THEN COALESCE(PACA.CapoArea, N'') ELSE GA.CapoArea END AS AgenteZoho,
+        CC.IDProfessione,
+        CC.Professione
 
     FROM Staging.CometaCustomer CC
     LEFT JOIN Import.Provincia P ON P.CodSiglaProvincia = CC.Provincia
@@ -194,7 +199,9 @@ SELECT
     CAST(0 AS BIT) AS HasRoleMySolutionInterno,
     CAST(0 AS BIT) AS HasAbbonamentoMySolution,
     CAST(0 AS BIT) AS HasAbbonamentoMIA,
-    TD.AgenteZoho
+    TD.AgenteZoho,
+    TD.IDProfessione,
+    TD.Professione
 
 FROM TableData TD;
 GO

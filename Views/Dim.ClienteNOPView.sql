@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE   VIEW [Dim].[ClienteNOPView]
 AS
 WITH IscrizioniCorsi
@@ -184,7 +185,9 @@ SELECT
     TD.HasRoleMySolutionInterno,
     CAST(0 AS BIT) AS HasAbbonamentoMySolution,
     CAST(0 AS BIT) AS HasAbbonamentoMIA,
-    TD.AgenteZoho
+    TD.AgenteZoho,
+    -1 AS IDProfessione,
+    N'' AS Professione
 
 FROM TableData TD;
 GO

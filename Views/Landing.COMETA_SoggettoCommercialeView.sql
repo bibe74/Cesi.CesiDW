@@ -18,6 +18,7 @@ AS (
             id_anagrafica,
             tipo,
             id_gruppo_agenti,
+            id_cat_com_sc,
             ' '
         ))) AS ChangeHashKey,
         CURRENT_TIMESTAMP AS InsertDatetime,
@@ -26,6 +27,7 @@ AS (
         id_anagrafica,
         tipo,
         id_gruppo_agenti,
+        id_cat_com_sc,
         ROW_NUMBER() OVER (PARTITION BY id_anagrafica ORDER BY id_sog_commerciale DESC) AS rnIDSoggettoCommercialeDESC
 
     FROM COMETA.SoggettoCommerciale
@@ -48,6 +50,7 @@ SELECT
     TD.id_anagrafica,
     TD.tipo COLLATE DATABASE_DEFAULT AS tipo,
     TD.id_gruppo_agenti,
+    TD.id_cat_com_sc,
     TD.rnIDSoggettoCommercialeDESC
 
 FROM TableData TD;

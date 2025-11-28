@@ -36,7 +36,9 @@ CREATE TABLE [Staging].[CometaCustomer]
 [motivo_disdetta] [nvarchar] (120) COLLATE Latin1_General_CI_AS NULL,
 [Telefono] [nvarchar] (200) COLLATE Latin1_General_CI_AS NULL,
 [Cellulare] [nvarchar] (200) COLLATE Latin1_General_CI_AS NULL,
-[Fax] [nvarchar] (200) COLLATE Latin1_General_CI_AS NULL
+[Fax] [nvarchar] (200) COLLATE Latin1_General_CI_AS NULL,
+[IDProfessione] [int] NULL,
+[Professione] [nvarchar] (60) COLLATE Latin1_General_CI_AS NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [Staging].[CometaCustomer] ADD CONSTRAINT [PK_Staging_CometaCustomer] PRIMARY KEY CLUSTERED ([UpdateDatetime], [id_sog_commerciale]) ON [PRIMARY]

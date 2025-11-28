@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE PROCEDURE [COMETA].[usp_Merge_SoggettoCommerciale]
 AS
 BEGIN
@@ -27,6 +28,7 @@ BEGIN
         TGT.id_anagrafica = SRC.id_anagrafica,
         TGT.tipo = SRC.tipo,
         TGT.id_gruppo_agenti = SRC.id_gruppo_agenti,
+        TGT.id_cat_com_sc = SRC.id_cat_com_sc,
         TGT.rnIDSoggettoCommercialeDESC = SRC.rnIDSoggettoCommercialeDESC
 
     WHEN NOT MATCHED AND SRC.IsDeleted = CAST(0 AS BIT)
@@ -45,6 +47,7 @@ BEGIN
         id_anagrafica,
         tipo,
         id_gruppo_agenti,
+        id_cat_com_sc,
         rnIDSoggettoCommercialeDESC
       )
 

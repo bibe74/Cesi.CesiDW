@@ -132,7 +132,9 @@ BEGIN
         TGT.HasRoleMySolutionInterno = SRC.HasRoleMySolutionInterno,
         TGT.HasAbbonamentoMySolution = SRC.HasAbbonamentoMySolution,
         TGT.HasAbbonamentoMIA = SRC.HasAbbonamentoMIA,
-        TGT.AgenteZoho = SRC.AgenteZoho
+        TGT.AgenteZoho = SRC.AgenteZoho,
+        TGT.IDProfessione = SRC.IDProfessione,
+        TGT.Professione = SRC.Professione
 
     WHEN NOT MATCHED
       THEN INSERT (
@@ -184,7 +186,9 @@ BEGIN
         HasRoleMySolutionInterno,
         HasAbbonamentoMySolution,
         HasAbbonamentoMIA,
-        AgenteZoho
+        AgenteZoho,
+        IDProfessione,
+        Professione
       )
       VALUES (
         SRC.IDSoggettoCommerciale,
@@ -235,7 +239,9 @@ BEGIN
         SRC.HasRoleMySolutionInterno,
         SRC.HasAbbonamentoMySolution,
         SRC.HasAbbonamentoMIA,
-        SRC.AgenteZoho
+        SRC.AgenteZoho,
+        SRC.IDProfessione,
+        SRC.Professione
       )
 
     OUTPUT
@@ -304,7 +310,9 @@ BEGIN
         TGT.HasRoleMySolutionDemo = SRC.HasRoleMySolutionDemo,
         TGT.HasRoleMySolutionInterno = SRC.HasRoleMySolutionInterno,
         TGT.HasAbbonamentoMySolution = SRC.HasAbbonamentoMySolution,
-        TGT.HasAbbonamentoMIA = SRC.HasAbbonamentoMIA
+        TGT.HasAbbonamentoMIA = SRC.HasAbbonamentoMIA,
+        TGT.IDProfessione = SRC.IDProfessione,
+        TGT.Professione = SRC.Professione
 
     WHEN NOT MATCHED
       THEN INSERT (
@@ -355,7 +363,9 @@ BEGIN
         HasRoleMySolutionDemo,
         HasRoleMySolutionInterno,
         HasAbbonamentoMySolution,
-        HasAbbonamentoMIA
+        HasAbbonamentoMIA,
+        IDProfessione,
+        Professione
       )
       VALUES (
         SRC.IDSoggettoCommerciale,
@@ -405,7 +415,9 @@ BEGIN
         SRC.HasRoleMySolutionDemo,
         SRC.HasRoleMySolutionInterno,
         SRC.HasAbbonamentoMySolution,
-        SRC.HasAbbonamentoMIA
+        SRC.HasAbbonamentoMIA,
+        SRC.IDProfessione,
+        SRC.Professione
       )
 
     OUTPUT

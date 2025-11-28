@@ -12,10 +12,11 @@ CREATE TABLE [Landing].[COMETA_SoggettoCommerciale]
 [id_anagrafica] [int] NULL,
 [tipo] [char] (1) COLLATE Latin1_General_CI_AS NULL,
 [id_gruppo_agenti] [int] NULL,
+[id_cat_com_sc] [int] NULL,
 [rnIDSoggettoCommercialeDESC] [int] NOT NULL
 ) ON [PRIMARY]
 GO
-ALTER TABLE [Landing].[COMETA_SoggettoCommerciale] ADD CONSTRAINT [PK_Landing_COMETA_SoggettoCommerciale] PRIMARY KEY CLUSTERED  ([UpdateDatetime], [id_sog_commerciale]) ON [PRIMARY]
+ALTER TABLE [Landing].[COMETA_SoggettoCommerciale] ADD CONSTRAINT [PK_Landing_COMETA_SoggettoCommerciale] PRIMARY KEY CLUSTERED ([UpdateDatetime], [id_sog_commerciale]) ON [PRIMARY]
 GO
 CREATE UNIQUE NONCLUSTERED INDEX [IX_COMETA_SoggettoCommerciale_BusinessKey] ON [Landing].[COMETA_SoggettoCommerciale] ([id_sog_commerciale]) ON [PRIMARY]
 GO
