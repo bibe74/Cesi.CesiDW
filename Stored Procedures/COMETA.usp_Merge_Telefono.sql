@@ -24,6 +24,7 @@ BEGIN
         TGT.ChangeHashKeyASCII = SRC.ChangeHashKeyASCII,
         --TGT.InsertDatetime = SRC.InsertDatetime,
         TGT.UpdateDatetime = SRC.UpdateDatetime,
+        TGT.IsDeleted = SRC.IsDeleted,
         TGT.id_anagrafica = SRC.id_anagrafica,
         TGT.tipo = SRC.tipo,
         TGT.num_riferimento = SRC.num_riferimento,

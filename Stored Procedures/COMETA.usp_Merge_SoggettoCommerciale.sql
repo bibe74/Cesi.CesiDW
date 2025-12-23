@@ -24,6 +24,7 @@ BEGIN
         TGT.ChangeHashKeyASCII = SRC.ChangeHashKeyASCII,
         --TGT.InsertDatetime = SRC.InsertDatetime,
         TGT.UpdateDatetime = SRC.UpdateDatetime,
+        TGT.IsDeleted = SRC.IsDeleted,
         TGT.codice = SRC.codice,
         TGT.id_anagrafica = SRC.id_anagrafica,
         TGT.tipo = SRC.tipo,
@@ -56,7 +57,7 @@ BEGIN
       THEN UPDATE
         SET TGT.IsDeleted = CAST(1 AS BIT),
         TGT.UpdateDatetime = CURRENT_TIMESTAMP,
-        TGT.ChangeHashKey = CONVERT(VARBINARY(20), ''),
+        TGT.ChangeHashKey = CONVERT(VARBINARY(32), ''),
         TGT.ChangeHashKeyASCII = ''
 
     OUTPUT

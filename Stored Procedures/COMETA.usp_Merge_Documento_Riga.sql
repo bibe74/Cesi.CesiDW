@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE PROCEDURE [COMETA].[usp_Merge_Documento_Riga]
 AS
 BEGIN
@@ -23,6 +24,7 @@ BEGIN
         TGT.ChangeHashKeyASCII = SRC.ChangeHashKeyASCII,
         --TGT.InsertDatetime = SRC.InsertDatetime,
         TGT.UpdateDatetime = SRC.UpdateDatetime,
+        TGT.IsDeleted = SRC.IsDeleted,
         TGT.id_documento = SRC.id_documento,
         TGT.id_gruppo_agenti = SRC.id_gruppo_agenti,
         TGT.num_riga = SRC.num_riga,

@@ -1,8 +1,8 @@
 CREATE TABLE [Landing].[COMETA_SoggettoCommerciale]
 (
 [id_sog_commerciale] [int] NOT NULL,
-[HistoricalHashKey] [varbinary] (20) NULL,
-[ChangeHashKey] [varbinary] (20) NULL,
+[HistoricalHashKey] [varbinary] (32) NULL,
+[ChangeHashKey] [varbinary] (32) NULL,
 [HistoricalHashKeyASCII] [varchar] (34) COLLATE Latin1_General_CI_AS NULL,
 [ChangeHashKeyASCII] [varchar] (34) COLLATE Latin1_General_CI_AS NULL,
 [InsertDatetime] [datetime] NOT NULL,

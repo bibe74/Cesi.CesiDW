@@ -2,7 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 /**
  * @view Fact.vReportInvioAutomatico
 */
@@ -93,7 +92,9 @@ AS (
 
     FROM Dim.ClienteAccessi C
     LEFT JOIN Import.CapiArea ICA ON ICA.CapoArea = C.Agente
+        AND ICA.InvioEmail = CAST(1 AS BIT)
     WHERE C.HasRoleMySolutionDemo = CAST(1 AS BIT)
+        AND ICA.Email IS NOT NULL
 
     UNION ALL
 

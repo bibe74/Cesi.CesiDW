@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE PROCEDURE [COMETA].[usp_Merge_Scadenza]
 AS
 BEGIN
@@ -23,6 +24,7 @@ BEGIN
         TGT.ChangeHashKeyASCII = SRC.ChangeHashKeyASCII,
         --TGT.InsertDatetime = SRC.InsertDatetime,
         TGT.UpdateDatetime = SRC.UpdateDatetime,
+        TGT.IsDeleted = SRC.IsDeleted,
         TGT.tipo_scadenza = SRC.tipo_scadenza,
         TGT.id_sog_commerciale = SRC.id_sog_commerciale,
         TGT.data_scadenza = SRC.data_scadenza,

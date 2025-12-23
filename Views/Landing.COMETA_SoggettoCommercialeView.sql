@@ -9,11 +9,11 @@ WITH TableData
 AS (
     SELECT
         id_sog_commerciale,
-        CONVERT(VARBINARY(20), HASHBYTES('MD5', CONCAT(
+        CONVERT(VARBINARY(32), HASHBYTES('SHA2_256', CONCAT(
             id_sog_commerciale,
             ' '
         ))) AS HistoricalHashKey,
-        CONVERT(VARBINARY(20), HASHBYTES('MD5', CONCAT(
+        CONVERT(VARBINARY(32), HASHBYTES('SHA2_256', CONCAT(
             codice,
             id_anagrafica,
             tipo,

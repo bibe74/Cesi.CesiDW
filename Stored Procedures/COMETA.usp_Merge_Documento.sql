@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE PROCEDURE [COMETA].[usp_Merge_Documento]
 AS
 BEGIN
@@ -14,7 +15,7 @@ BEGIN
     IF (COALESCE(@IsCometaExportRunning, 1) = 1) RETURN -1;
 
     MERGE INTO Landing.COMETA_Documento AS TGT
-    USING Landing.COMETA_DocumentoView (nolock) AS SRC
+    USING Landing.COMETA_DocumentoView (NOLOCK) AS SRC
     ON SRC.id_documento = TGT.id_documento
 
     WHEN MATCHED AND (SRC.ChangeHashKeyASCII <> TGT.ChangeHashKeyASCII)
@@ -23,6 +24,7 @@ BEGIN
         TGT.ChangeHashKeyASCII = SRC.ChangeHashKeyASCII,
         --TGT.InsertDatetime = SRC.InsertDatetime,
         TGT.UpdateDatetime = SRC.UpdateDatetime,
+        TGT.IsDeleted = SRC.IsDeleted,
         TGT.id_prof_documento = SRC.id_prof_documento,
         TGT.id_registro = SRC.id_registro,
         TGT.data_registrazione = SRC.data_registrazione,

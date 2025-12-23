@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE PROCEDURE [COMETA].[usp_Merge_Registro]
 AS
 BEGIN
@@ -23,6 +24,7 @@ BEGIN
         TGT.ChangeHashKeyASCII = SRC.ChangeHashKeyASCII,
         --TGT.InsertDatetime = SRC.InsertDatetime,
         TGT.UpdateDatetime = SRC.UpdateDatetime,
+        TGT.IsDeleted = SRC.IsDeleted,
         TGT.id_esercizio = SRC.id_esercizio,
         TGT.tipo_registro = SRC.tipo_registro,
         TGT.id_mod_registro = SRC.id_mod_registro,
