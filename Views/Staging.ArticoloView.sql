@@ -101,7 +101,8 @@ AS (
         COALESCE(ABID.Data3, N'') AS Data3,
         COALESCE(ABID.Data4, N'') AS Data4,
         COALESCE(ABID.Data5, N'') AS Data5,
-        COALESCE(ABID.Data6, N'') AS Data6 
+        COALESCE(ABID.Data6, N'') AS Data6,
+        CASE WHEN DA.Codice LIKE N'MIA%L' THEN LEFT(RIGHT(DA.Codice, 2), 1) ELSE N'' END AS LivelloMIA
 
     FROM DatiArticolo DA
     LEFT JOIN Landing.COMETAINTEGRATION_ArticleBIData ABID ON ABID.ArticleID = DA.id_articolo
@@ -136,7 +137,8 @@ SELECT
     TD.Data3,
     TD.Data4,
     TD.Data5,
-    TD.Data6
+    TD.Data6,
+    TD.LivelloMIA
 
 FROM TableData TD;
 GO

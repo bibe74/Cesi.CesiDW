@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 /**
  * @storedprocedure Fact.usp_ReportDettaglioOrdini
 */
@@ -120,7 +121,8 @@ AS (
         END, 0.0) / 100.0 AS ProvvigioneTeorica,
         COALESCE(CASE WHEN DATEDIFF(MONTH, D.PKDataInizioContratto, D.PKDataFineContratto) >= 24 THEN LPTP.LiquidazioneProvvigioneTeorica ELSE LPTA.LiquidazioneProvvigioneTeorica END, N'') AS LiquidazioneProvvigioneTeorica,
         D.IDDocumentoRinnovato,
-        D.PKDataCompetenza
+        D.PKDataCompetenza,
+        A.LivelloMIA
 
     FROM Fact.Documenti D
     INNER JOIN Dim.Cliente C ON C.PKCliente = D.PKCliente
@@ -224,7 +226,8 @@ AS (
         CASE WHEN D.NoteDecisionali LIKE @AgenteProprietarioPrefix + N'%)' THEN SUBSTRING(D.NoteDecisionali, LEN(@AgenteProprietarioPrefix)+1, LEN(D.NoteDecisionali) - LEN(@AgenteProprietarioPrefix) - 1) ELSE GA.CapoArea END,
         COALESCE(CASE WHEN DATEDIFF(MONTH, D.PKDataInizioContratto, D.PKDataFineContratto) >= 24 THEN LPTP.LiquidazioneProvvigioneTeorica ELSE LPTA.LiquidazioneProvvigioneTeorica END, N''),
         D.IDDocumentoRinnovato,
-        D.PKDataCompetenza
+        D.PKDataCompetenza,
+        A.LivelloMIA
 ),
 DettaglioOrdini
 AS (
@@ -273,7 +276,8 @@ AS (
         O.LiquidazioneProvvigioneTeorica,
         O.AgenteProprietario,
         O.IDDocumentoRinnovato,
-        O.PKDataCompetenza
+        O.PKDataCompetenza,
+        O.LivelloMIA
 
     FROM Ordini O
 )
@@ -325,7 +329,8 @@ SELECT
     DOR.TotaleDocumento AS TotaleRinnovo,
     DOR.DataDocumento AS DataRinnovo,
     DOR.TipoFatturazione AS TipoFatturazioneRinnovo,
-    DATEDIFF(MONTH, DOR.PKDataInizioContratto, DATEADD(DAY, 1, DOR.PKDataFineContratto)) AS DurataMesiRinnovo
+    DATEDIFF(MONTH, DOR.PKDataInizioContratto, DATEADD(DAY, 1, DOR.PKDataFineContratto)) AS DurataMesiRinnovo,
+    DO.LivelloMIA
 
 INTO #ReportData
 
@@ -400,7 +405,8 @@ SELECT
     SUM(RD.TotaleRinnovo) AS TotaleRinnovo,
     RD.DataRinnovo,
     RD.TipoFatturazioneRinnovo,
-    RD.DurataMesiRinnovo
+    RD.DurataMesiRinnovo,
+    RD.LivelloMIA
 
 FROM #ReportData RD
 GROUP BY RD.CodiceCliente,
@@ -445,7 +451,8 @@ GROUP BY RD.CodiceCliente,
     --RD.TotaleRinnovo,
     RD.DataRinnovo,
     RD.TipoFatturazioneRinnovo,
-    RD.DurataMesiRinnovo
+    RD.DurataMesiRinnovo,
+    RD.LivelloMIA
 ORDER BY RD.AgenteAssegnato,
     RD.CodiceCliente,
     RD.NumeroDocumento;

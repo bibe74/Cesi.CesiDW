@@ -24,7 +24,8 @@ CREATE TABLE [Staging].[Articolo]
 [Data3] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL,
 [Data4] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL,
 [Data5] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL,
-[Data6] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL
+[Data6] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL,
+[LivelloMIA] [nvarchar] (1) COLLATE Latin1_General_CI_AS NOT NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [Staging].[Articolo] ADD CONSTRAINT [PK_Landing_COMETA_Articolo] PRIMARY KEY CLUSTERED ([UpdateDatetime], [id_articolo]) ON [PRIMARY]

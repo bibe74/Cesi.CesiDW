@@ -41,7 +41,8 @@ BEGIN
         TGT.Data3 = SRC.Data3,
         TGT.Data4 = SRC.Data4,
         TGT.Data5 = SRC.Data5,
-        TGT.Data6 = SRC.Data6
+        TGT.Data6 = SRC.Data6,
+        TGT.LivelloMIA = SRC.LivelloMIA
 
     WHEN NOT MATCHED
       THEN INSERT (
@@ -69,7 +70,8 @@ BEGIN
         Data3,
         Data4,
         Data5,
-        Data6
+        Data6,
+        LivelloMIA
       )
       VALUES (
         SRC.id_articolo,
@@ -96,7 +98,8 @@ BEGIN
         SRC.Data3,
         SRC.Data4,
         SRC.Data5,
-        SRC.Data6
+        SRC.Data6,
+        SRC.LivelloMIA
       )
 
     OUTPUT

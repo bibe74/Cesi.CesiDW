@@ -25,7 +25,8 @@ CREATE TABLE [Dim].[Articolo]
 [Data3] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL,
 [Data4] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL,
 [Data5] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL,
-[Data6] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL
+[Data6] [nvarchar] (40) COLLATE Latin1_General_CI_AS NOT NULL,
+[LivelloMIA] [nvarchar] (1) COLLATE Latin1_General_CI_AS NOT NULL
 ) ON [PRIMARY]
 GO
 ALTER TABLE [Dim].[Articolo] ADD CONSTRAINT [PK_Dim_Articolo] PRIMARY KEY CLUSTERED ([PKArticolo]) ON [PRIMARY]
