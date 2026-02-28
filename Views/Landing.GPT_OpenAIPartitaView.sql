@@ -8,7 +8,6 @@ AS
 WITH TableData
 AS (
     SELECT
-
         CONVERT(VARBINARY(20), HASHBYTES('MD5', CONCAT(
             Id,
             ' '
@@ -16,6 +15,7 @@ AS (
         CONVERT(VARBINARY(20), HASHBYTES('MD5', CONCAT(
             Codice,
             Descrizione,
+            DataCreazione,
             DataScadenza,
             ClienteId,
             Stato,
@@ -27,6 +27,7 @@ AS (
         Id,
         Codice,
         Descrizione,
+        DataCreazione,
         DataScadenza,
         ClienteId,
         Stato,
@@ -50,6 +51,7 @@ SELECT
     -- Attributi
     TD.Codice,
     TD.Descrizione,
+    TD.DataCreazione,
     TD.DataScadenza,
     TD.ClienteId,
     TD.Stato,

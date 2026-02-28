@@ -10,6 +10,7 @@ CREATE TABLE [Landing].[GPT_OpenAIPartita]
 [IsDeleted] [bit] NULL,
 [Codice] [nvarchar] (128) COLLATE Latin1_General_CI_AS NOT NULL,
 [Descrizione] [nvarchar] (max) COLLATE Latin1_General_CI_AS NOT NULL,
+[DataCreazione] [date] NOT NULL,
 [DataScadenza] [date] NOT NULL,
 [ClienteId] [int] NOT NULL,
 [Stato] [bit] NOT NULL,

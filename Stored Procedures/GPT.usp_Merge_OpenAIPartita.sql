@@ -20,6 +20,7 @@ BEGIN
         TGT.UpdateDatetime = SRC.UpdateDatetime,
         TGT.Codice = SRC.Codice,
         TGT.Descrizione = SRC.Descrizione,
+        TGT.DataCreazione = SRC.DataCreazione,
         TGT.DataScadenza = SRC.DataScadenza,
         TGT.ClienteId = SRC.ClienteId,
         TGT.Stato = SRC.Stato,
@@ -39,6 +40,7 @@ BEGIN
     
         Codice,
         Descrizione,
+        DataCreazione,
         DataScadenza,
         ClienteId,
         Stato,

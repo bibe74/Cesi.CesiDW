@@ -1,0 +1,2 @@
+CREATE SYNONYM [MYSOLUTION].[Demo] FOR [MYSOLUTIONPRODUZIONE2].[Nop_MySolution].[dbo].[VW_MySolution_Demo]
+GO
