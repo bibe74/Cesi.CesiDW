@@ -3,78 +3,84 @@ GO
 SET ANSI_NULLS ON
 GO
 
-CREATE   VIEW [Staging].[AccessiView]
+CREATE VIEW [Staging].[AccessiView]
 AS
-WITH ClientiAccessi
+WITH UtentiConPagineVisitate
+AS (
+    SELECT DISTINCT Username
+    FROM Landing.MYSOLUTION_LogsForReport LFR
+),
+UtentiConPagineVisitateClienti
 AS (
     SELECT
-        AC.Username,
-        C.PKCliente,
-        1 AS rn
+        UCPV.Username,
+        C.PKCliente
 
-    FROM Staging.AccessiCustomer AC
-    INNER JOIN Dim.Cliente C ON C.IDSoggettoCommerciale = AC.IDSoggettoCommerciale
+    FROM UtentiConPagineVisitate UCPV
+    INNER JOIN Staging.SoggettoCommerciale_Email SCE ON SCE.Email = UCPV.Username
+        AND SCE.rnSoggettoCommercialeDESC = 1
+    INNER JOIN Dim.Cliente C ON C.IDSoggettoCommerciale = SCE.IDSoggettoCommerciale
+        AND C.IsDeleted = CAST(0 AS BIT)
 
     UNION ALL
 
     SELECT
-        AC.Username,
-        COALESCE(CEmail.PKCliente, -101) AS PKCliente,
-        ROW_NUMBER() OVER (PARTITION BY AC.Username ORDER BY CEmail.PKCliente DESC) AS rn
+        UCPV.Username,
+        C.PKCliente
 
-    FROM Staging.AccessiCustomer AC
-    LEFT JOIN Dim.Cliente C ON C.IDSoggettoCommerciale = AC.IDSoggettoCommerciale
-    LEFT JOIN Dim.Cliente CEmail ON CEmail.Email = AC.Username
+    FROM UtentiConPagineVisitate UCPV
+    LEFT JOIN Staging.SoggettoCommerciale_Email SCE ON SCE.Email = UCPV.Username
+        AND SCE.rnSoggettoCommercialeDESC = 1
+    INNER JOIN Dim.Cliente C ON C.Email = UCPV.Username
+        AND C.HasAnagraficaCometa = CAST(0 AS BIT)
+        AND C.IsDeleted = CAST(0 AS BIT)
+    WHERE SCE.Email IS NULL
 ),
-AccessiRiepilogo
+AccessiDettaglio
 AS (
     SELECT
         --LFR.Data,
         COALESCE(D.PKData, CAST('19000101' AS DATE)) AS PKData,
         --LFR.IDUser,
-        CA.PKClienteAccessi,
-        CA.PKGruppoAgenti,
-        SUM(LFR.NumeroAccessi) AS NumeroAccessi,
-        SUM(LFR.NumeroPagineVisitate) AS NumeroPagineVisitate
+        COALESCE(UCAC.PKCliente, -101) AS PKCliente,
+        LFR.NumeroAccessi,
+        LFR.NumeroPagineVisitate
 
     FROM Landing.MYSOLUTION_LogsForReport LFR
     LEFT JOIN Dim.Data D ON D.PKData = LFR.Data
-    INNER JOIN Staging.AccessiUsername AU ON AU.UsernameAccessi = LFR.Username
-    INNER JOIN Dim.ClienteAccessi CA ON CA.Username = AU.Username
+    LEFT JOIN UtentiConPagineVisitateClienti UCAC ON UCAC.Username = LFR.Username
     WHERE LFR.IsDeleted = CAST(0 AS BIT)
-    GROUP BY COALESCE (D.PKData, CAST ('19000101' AS DATE)),
-        CA.PKClienteAccessi,
-        CA.PKGruppoAgenti
+        AND LFR.Username <> N''
 ),
 TableData
 AS (
     SELECT
-        AR.PKData,
-        AR.PKClienteAccessi AS PKCliente,
+        AD.PKData,
+        AD.PKCliente,
 
         CONVERT(VARBINARY(20), HASHBYTES('MD5', CONCAT(
-            AR.PKData,
-            AR.PKClienteAccessi,
+            AD.PKData,
+            AD.PKCliente,
             ' '
         ))) AS HistoricalHashKey,
         CONVERT(VARBINARY(20), HASHBYTES('MD5', CONCAT(
             GA.PKCapoArea,
-            SUM(AR.NumeroAccessi),
-            SUM(AR.NumeroPagineVisitate),
+            SUM(AD.NumeroAccessi),
+            SUM(AD.NumeroPagineVisitate),
             ' '
         ))) AS ChangeHashKey,
         CURRENT_TIMESTAMP AS InsertDatetime,
         CURRENT_TIMESTAMP AS UpdateDatetime,
 
-        COALESCE(GA.PKCapoArea, -1) AS PKCapoArea,
-        SUM(AR.NumeroAccessi) AS NumeroAccessi,
-        SUM(AR.NumeroPagineVisitate) AS NumeroPagineVisitate
+        GA.PKCapoArea,
+        SUM(AD.NumeroAccessi) AS NumeroAccessi,
+        SUM(AD.NumeroPagineVisitate) AS NumeroPagineVisitate
 
-    FROM AccessiRiepilogo AR
-    LEFT JOIN Dim.ClienteAccessi CA ON CA.PKCliente = AR.PKClienteAccessi
-    LEFT JOIN Dim.GruppoAgenti GA ON GA.PKGruppoAgenti = CA.PKGruppoAgenti
-    GROUP BY AR.PKData,
-        AR.PKClienteAccessi,
+    FROM AccessiDettaglio AD
+    INNER JOIN Dim.Cliente C ON C.PKCliente = AD.PKCliente
+    INNER JOIN Dim.GruppoAgenti GA ON GA.PKGruppoAgenti = C.PKGruppoAgenti
+    GROUP BY AD.PKData,
+        AD.PKCliente,
         GA.PKCapoArea
 )
 SELECT

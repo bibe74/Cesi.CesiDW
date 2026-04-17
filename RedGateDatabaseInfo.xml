@@ -65,7 +65,6 @@
   </WriteToFileOptions>
   <DataFileSet>
     <Count>20</Count>
-    <DataFile>audit.tables_Data.sql</DataFile>
     <DataFile>Import.Amministratori_Data.sql</DataFile>
     <DataFile>Import.ArticoloCategoriaMaster_Data.sql</DataFile>
     <DataFile>Import.Budget_Data.sql</DataFile>
@@ -82,8 +81,9 @@
     <DataFile>Import.Libero2MacroTipologia_Data.sql</DataFile>
     <DataFile>Import.LiquidazioneProvvigioneTeorica_Data.sql</DataFile>
     <DataFile>Import.ProfiliDocumento_Data.sql</DataFile>
-    <DataFile>Import.ProvinciaAgenteCapoArea_Data.sql</DataFile>
     <DataFile>Import.ProvinciaAgente_Data.sql</DataFile>
     <DataFile>Import.Provincia_Data.sql</DataFile>
+    <DataFile>Import.ProvinciaAgenteCapoArea_Data.sql</DataFile>
+    <DataFile>audit.tables_Data.sql</DataFile>
   </DataFileSet>
 </DatabaseInformation>
