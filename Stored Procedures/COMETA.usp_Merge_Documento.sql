@@ -2,7 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 CREATE PROCEDURE [COMETA].[usp_Merge_Documento]
 AS
 BEGIN
@@ -42,9 +41,12 @@ BEGIN
         TGT.id_libero_3 = SRC.id_libero_3,
         TGT.id_tipo_fatturazione = SRC.id_tipo_fatturazione,
         TGT.id_con_pagamento = SRC.id_con_pagamento,
+        TGT.data_disdetta = SRC.data_disdetta,
+        TGT.motivo_disdetta = SRC.motivo_disdetta,
         TGT.rinnovo_automatico = SRC.rinnovo_automatico,
         TGT.note_intestazione = SRC.note_intestazione,
         TGT.note_decisionali = SRC.note_decisionali
+
 
     WHEN NOT MATCHED AND SRC.IsDeleted = CAST(0 AS BIT)
       THEN INSERT VALUES (

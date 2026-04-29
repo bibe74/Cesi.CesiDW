@@ -96,7 +96,7 @@ SELECT
     TD.id_libero_3,
     TD.id_tipo_fatturazione,
     TD.data_disdetta,
-    TD.motivo_disdetta,
+    LEFT(TD.motivo_disdetta, 120) AS motivo_disdetta,
     TD.id_con_pagamento,
     TD.rinnovo_automatico COLLATE DATABASE_DEFAULT AS rinnovo_automatico,
     LEFT(TD.note_intestazione, 1000) COLLATE DATABASE_DEFAULT AS note_intestazione,
