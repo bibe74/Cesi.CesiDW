@@ -2,7 +2,6 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
-
 CREATE VIEW [Staging].[CorsiView]
 AS
 WITH TableData
@@ -105,7 +104,7 @@ SELECT
     TD.Corso,
     TD.IDCorso,
     TD.IDWebinar,
-    TD.TipoCorso,
+    LEFT(TD.TipoCorso, 120) AS TipoCorso,
     --TD.StartDate_text,
     --TD.StartDate,
     TD.PKDataInizio,
