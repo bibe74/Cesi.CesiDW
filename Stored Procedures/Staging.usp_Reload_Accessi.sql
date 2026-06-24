@@ -3,6 +3,7 @@ GO
 SET ANSI_NULLS ON
 GO
 
+
 CREATE PROCEDURE [Staging].[usp_Reload_Accessi]
 AS
 BEGIN
@@ -26,7 +27,7 @@ BEGIN
 
     INSERT INTO Staging.Accessi
     SELECT * FROM Staging.AccessiView
-    WHERE UpdateDatetime > @lastupdated_staging;
+    --WHERE UpdateDatetime > @lastupdated_staging;
 
     SELECT @lastupdated_staging = MAX(UpdateDatetime) FROM Staging.Accessi;
 

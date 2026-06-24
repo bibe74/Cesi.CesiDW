@@ -55,8 +55,8 @@ BEGIN
             COUNT(DISTINCT A.PKData) AS NumeroGiorniAccesso
 
         FROM Fact.Accessi A
-        INNER JOIN Dim.ClienteAccessi CA ON CA.PKClienteAccessi = A.PKCliente
-        INNER JOIN Dim.Cliente C ON C.PKCliente = CA.PKCliente
+        --INNER JOIN Dim.ClienteAccessi CA ON CA.PKClienteAccessi = A.PKCliente
+        INNER JOIN Dim.Cliente C ON C.PKCliente = A.PKCliente
             AND (
                 @Agente IS NULL
                 OR C.AgenteZoho = @Agente
@@ -76,8 +76,8 @@ BEGIN
             COUNT(DISTINCT A.PKData) AS NumeroGiorniAccesso
 
         FROM Fact.Accessi A
-        INNER JOIN Dim.ClienteAccessi CA ON CA.PKClienteAccessi = A.PKCliente
-        INNER JOIN Dim.Cliente C ON C.PKCliente = CA.PKCliente
+        --INNER JOIN Dim.ClienteAccessi CA ON CA.PKClienteAccessi = A.PKCliente
+        INNER JOIN Dim.Cliente C ON C.PKCliente = A.PKCliente
             AND (
                 @Agente IS NULL
                 OR C.AgenteZoho = @Agente
