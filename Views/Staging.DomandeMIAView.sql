@@ -2,6 +2,7 @@ SET QUOTED_IDENTIFIER ON
 GO
 SET ANSI_NULLS ON
 GO
+
 CREATE   VIEW [Staging].[DomandeMIAView]
 AS
 WITH Clienti
@@ -66,6 +67,7 @@ AS (
         AND T.IsDeleted = CAST(0 AS BIT)
     INNER JOIN Clienti C ON C.Id = T.ClienteId
     WHERE M.IsDeleted = CAST(0 AS BIT)
+        AND M.CreatedOn >= CONVERT(DATETIME, DATEADD(DAY, -30, CONVERT(DATE, CURRENT_TIMESTAMP)))
 ),
 TableData
 AS (

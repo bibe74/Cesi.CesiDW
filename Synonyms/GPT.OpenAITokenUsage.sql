@@ -1,0 +1,2 @@
+CREATE SYNONYM [GPT].[OpenAITokenUsage] FOR [MYSOLUTIONPRODUZIONE2].[dbGPT].[dbo].[OpenAITokenUsage]
+GO
